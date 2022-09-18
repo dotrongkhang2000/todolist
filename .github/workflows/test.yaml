@@ -19,7 +19,7 @@ jobs:
           submodules: false
 
       - name: Install dependencies
-          run: yarn --prefer-offline
+        run: yarn --prefer-offline
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
