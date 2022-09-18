@@ -1,0 +1,14 @@
+name: Test
+
+on:
+  push:
+    - master
+  pull_request:
+    - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+  steps:
+    - run: echo Hello World
