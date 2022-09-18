@@ -15,5 +15,11 @@ jobs:
     steps:
       - run: echo Hello World
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "yarn"
+
       - name: Build
         run: yarn build
