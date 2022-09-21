@@ -5,8 +5,9 @@ import SortableItem from "./SortableItem";
 
 import { Add as AddIcon } from "@mui/icons-material";
 
-import { IconButton, List, ListSubheader } from "@mui/material";
+import { IconButton, List, ListSubheader, Box } from "@mui/material";
 
+import { TitleIcon } from "../utils/renderIcon";
 interface DroppableProps {
   id: string;
   items?: IJob[];
@@ -44,7 +45,24 @@ const Droppable = ({ id, items }: DroppableProps) => {
               zIndex: 999,
             }}
           >
-            {id}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {TitleIcon(
+                id as
+                  | "Backlog"
+                  | "Todo"
+                  | "In Progress"
+                  | "In Review"
+                  | "Done"
+                  | "Canceled"
+              )}
+              {id}
+              <Box sx={{ ml: 1.5 }}>{items?.length}</Box>
+            </Box>
             <IconButton>
               <AddIcon />
             </IconButton>
