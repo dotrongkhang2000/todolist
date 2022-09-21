@@ -7,9 +7,10 @@ import { Box } from "@mui/material";
 
 interface ISortableItemProps {
   id: string;
+  items?: IJob[];
 }
 
-const SortableItem = ({ id }: ISortableItemProps) => {
+const SortableItem = ({ id, items }: ISortableItemProps) => {
   const {
     attributes,
     listeners,
@@ -19,21 +20,21 @@ const SortableItem = ({ id }: ISortableItemProps) => {
     isDragging,
   } = useSortable({ id });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
+  const jobRender = items?.find((item) => item.title === id);
 
   return (
     <Box
       component="li"
-      style={style}
+      sx={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+      }}
       ref={setNodeRef}
       {...attributes}
       {...listeners}
     >
-      <Item id={id} />
+      <Item id={jobRender} />
     </Box>
   );
 };

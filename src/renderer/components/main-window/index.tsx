@@ -12,18 +12,100 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import Droppable from "./Dropable";
-import Item from "./Item";
 import { removeAtIndex, insertAtIndex, arrayMove } from "../utils/handleArray";
+import Item from "./Item";
+
+interface IJob {
+  title?: string;
+  description?: string;
+  status: "Backlog" | "Todo" | "In Progress" | "In Review" | "Done" | "Cancel";
+  priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent";
+  assignee: IUserInfo;
+}
+interface IJobGroup {
+  [name: string]: IJob[];
+}
 
 const MainWindow = () => {
-  const [itemGroups, setItemGroups] = useState({
-    group1: ["1", "2", "3"],
-    group2: ["4", "5", "6"],
-    group3: ["7", "8", "9"],
+  const [jobGroups, setJobGroups] = useState<IJobGroup>({
+    Backlog: [
+      {
+        title: "TOD-16",
+        description: "Custom layout (with horizontal) the same linear",
+        status: "Todo",
+        priority: "No Priority",
+        assignee: {
+          name: "Assignee",
+          avatarUrl: "",
+          online: false,
+        },
+      },
+      {
+        title: "TOD-17",
+        description: "Custom layout (with horizontal) the same linear 2",
+        status: "Todo",
+        priority: "No Priority",
+        assignee: {
+          name: "Assignee",
+          avatarUrl: "",
+          online: false,
+        },
+      },
+      {
+        title: "TOD-18",
+        description: "Custom layout (with horizontal) the same linear 2",
+        status: "Todo",
+        priority: "No Priority",
+        assignee: {
+          name: "Assignee",
+          avatarUrl: "",
+          online: false,
+        },
+      },
+      {
+        title: "TOD-19",
+        description: "Custom layout (with horizontal) the same linear 2",
+        status: "Todo",
+        priority: "No Priority",
+        assignee: {
+          name: "Assignee",
+          avatarUrl: "",
+          online: false,
+        },
+      },
+      {
+        title: "TOD-20",
+        description: "Custom layout (with horizontal) the same linear 2",
+        status: "Todo",
+        priority: "No Priority",
+        assignee: {
+          name: "Assignee",
+          avatarUrl: "",
+          online: false,
+        },
+      },
+      {
+        title: "TOD-21",
+        description: "Custom layout (with horizontal) the same linear 2",
+        status: "Todo",
+        priority: "No Priority",
+        assignee: {
+          name: "Assignee",
+          avatarUrl: "",
+          online: false,
+        },
+      },
+    ],
+    Todo: [],
+    "In Progress": [],
+    Done: [],
+    Canceled: [],
   });
+
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+  const [activeJob, setActiveJob] = useState<IJob | null>(null);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -32,8 +114,14 @@ const MainWindow = () => {
     })
   );
 
-  const handleDragStart = ({ active }: DragStartEvent) =>
+  const handleDragStart = ({ active }: DragStartEvent) => {
     setActiveId(active?.id);
+
+    const activeIndex = active.data.current?.sortable.index;
+    const activeContainer = active.data.current?.sortable.containerId;
+    const job = jobGroups[activeContainer][activeIndex];
+    setActiveJob(job);
+  };
 
   const handleDragCancel = () => setActiveId(null);
   const handleDragOver = ({ active, over }: DragOverEvent) => {
@@ -47,20 +135,22 @@ const MainWindow = () => {
     const overContainer = over.data.current?.sortable.containerId || over.id;
 
     if (activeContainer !== overContainer) {
-      setItemGroups((itemGroups) => {
+      setJobGroups((jobGroups) => {
         const activeIndex = active.data.current?.sortable.index;
         const overIndex =
-          over.id in itemGroups
-            ? itemGroups[overContainer as keyof typeof itemGroups].length + 1
+          over.id in jobGroups
+            ? jobGroups[overContainer as keyof typeof jobGroups].length + 1
             : over.data.current?.sortable.index;
+        const job = jobGroups[activeContainer][activeIndex];
+        setActiveJob(job);
 
         return moveBetweenContainers(
-          itemGroups,
+          jobGroups,
           activeContainer,
           activeIndex,
           overContainer,
           overIndex,
-          active.id
+          job
         );
       });
     }
@@ -77,29 +167,31 @@ const MainWindow = () => {
       const overContainer = over.data.current?.sortable.containerId || over.id;
       const activeIndex = active.data.current?.sortable.index;
       const overIndex =
-        over.id in itemGroups
-          ? itemGroups[overContainer as keyof typeof itemGroups].length + 1
+        over.id in jobGroups
+          ? jobGroups[overContainer as keyof typeof jobGroups].length + 1
           : over.data.current?.sortable.index;
 
-      setItemGroups((itemGroups) => {
+      setJobGroups((job) => {
         let newItems;
         if (activeContainer === overContainer) {
           newItems = {
-            ...itemGroups,
+            ...job,
             [overContainer]: arrayMove(
-              itemGroups[overContainer as keyof typeof itemGroups],
+              job[overContainer as keyof typeof jobGroups],
               activeIndex,
               overIndex
             ),
           };
         } else {
+          setActiveJob(activeContainer[active.id]);
+
           newItems = moveBetweenContainers(
-            itemGroups,
+            jobGroups,
             activeContainer,
             activeIndex,
             overContainer,
             overIndex,
-            active.id
+            activeContainer[active.id]
           );
         }
 
@@ -111,13 +203,13 @@ const MainWindow = () => {
   };
 
   const moveBetweenContainers = (
-    items: typeof itemGroups,
-    activeContainer: keyof typeof itemGroups,
+    items: IJobGroup,
+    activeContainer: UniqueIdentifier,
     activeIndex: number,
-    overContainer: keyof typeof itemGroups,
+    overContainer: UniqueIdentifier,
     overIndex: number,
-    item: UniqueIdentifier
-  ) => {
+    item: IJob
+  ): IJobGroup => {
     return {
       ...items,
       [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
@@ -135,15 +227,22 @@ const MainWindow = () => {
     >
       <Box
         sx={{
-          display: "flex",
+          display: "-webkit-box",
           justifyContent: "space-around",
+          p: 1,
+          backgroundImage:
+            "linear-gradient(to bottom right, #321D81 , #DD499D)",
+          height: "100vh",
+          overflowX: "scroll",
         }}
       >
-        {Object.entries(itemGroups).map(([key, element]) => (
-          <Droppable id={key} items={element} activeId={activeId} key={key} />
+        {Object.entries(jobGroups).map(([key, element]) => (
+          <Box key={key}>
+            <Droppable id={key} items={element} activeId={activeId} />
+          </Box>
         ))}
         <DragOverlay>
-          {activeId ? <Item id={activeId} dragOverlay /> : null}
+          {activeId ? <Item id={activeJob} dragOverlay /> : null}
         </DragOverlay>
       </Box>
     </DndContext>
