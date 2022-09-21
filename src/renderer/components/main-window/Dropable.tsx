@@ -1,35 +1,60 @@
-import React from "react";
 import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
 import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 
 import SortableItem from "./SortableItem";
 
-import { Box } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
+
+import { IconButton, List, ListSubheader } from "@mui/material";
 
 interface DroppableProps {
   id: string;
-  items: string[];
+  items?: IJob[];
   activeId?: UniqueIdentifier | null;
 }
 
 const Droppable = ({ id, items }: DroppableProps) => {
   const { setNodeRef } = useDroppable({ id });
 
+  const jobTileList = items?.map((item) => item?.title || "");
+
   return (
-    <SortableContext id={id} items={items} strategy={rectSortingStrategy}>
-      <Box
-        sx={{
-          border: "1px solid #000",
+    <SortableContext
+      id={id}
+      items={jobTileList || []}
+      strategy={rectSortingStrategy}
+    >
+      <List
+        sx={(theme) => ({
+          backgroundColor: theme.palette.grey[50],
           listStyle: "none",
-        }}
-        component="ul"
-        className="droppable"
+          width: "342px",
+          ml: 2,
+          maxHeight: 1,
+          borderRadius: 2,
+          overflowY: "scroll",
+        })}
         ref={setNodeRef}
+        subheader={
+          <ListSubheader
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              zIndex: 999,
+            }}
+          >
+            {id}
+            <IconButton>
+              <AddIcon />
+            </IconButton>
+          </ListSubheader>
+        }
       >
-        {items.map((item) => (
-          <SortableItem key={item} id={item} />
+        {items?.map((item) => (
+          <SortableItem key={item.title} id={item.title || ""} items={items} />
         ))}
-      </Box>
+      </List>
     </SortableContext>
   );
 };
