@@ -79,7 +79,7 @@ const MainWindow = () => {
         title: "TOD-20",
         description: "Custom layout (with horizontal) the same linear 2",
         status: "Todo",
-        priority: "No Priority",
+        priority: "Medium",
         assignee: {
           name: "Assignee",
           avatarUrl: "",

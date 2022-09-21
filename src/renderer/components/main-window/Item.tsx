@@ -9,15 +9,10 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
-import {
-  SignalCellular0Bar as SignalCellular0BarIcon,
-  SignalCellular1Bar as SignalCellular1BarIcon,
-  SignalCellular2Bar as SignalCellular2BarIcon,
-  SignalCellular3Bar as SignalCellular3BarIcon,
-  SignalCellular4Bar as SignalCellular4BarIcon,
-} from "@mui/icons-material";
+
 import { green } from "@mui/material/colors";
+
+import { PriorityIcon } from "../utils/renderIcon";
 
 interface IItemProps {
   id?: IJob | null;
@@ -36,23 +31,6 @@ const UserStatus = () => (
     }}
   />
 );
-
-const PriorityIcon = (
-  priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent"
-) => {
-  switch (priority) {
-    case "Low":
-      return <SignalCellular1BarIcon sx={{ fontSize: "1rem" }} />;
-    case "Medium":
-      return <SignalCellular2BarIcon sx={{ fontSize: "1rem" }} />;
-    case "High":
-      return <SignalCellular3BarIcon sx={{ fontSize: "1rem" }} />;
-    case "Urgent":
-      return <SignalCellular4BarIcon sx={{ fontSize: "1rem" }} />;
-    default:
-      return <SignalCellular0BarIcon sx={{ fontSize: "1rem" }} />;
-  }
-};
 
 const Item = ({ id, dragOverlay }: IItemProps) => {
   return (
@@ -89,7 +67,7 @@ const Item = ({ id, dragOverlay }: IItemProps) => {
         <CardActions>
           <IconButton>
             {/* @ts-expect-error */}
-            <PriorityIcon priority={id?.priority} />
+            {PriorityIcon(id?.priority)}
           </IconButton>
         </CardActions>
       </Card>
