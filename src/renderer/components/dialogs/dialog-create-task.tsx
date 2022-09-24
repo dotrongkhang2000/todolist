@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { PriorityIcon, TitleIcon } from "../utils/renderIcon";
 
-interface IDialogCreateJob {
+interface IDialogCreateTask {
   open: boolean;
   handleClose: () => void;
 }
@@ -81,7 +81,7 @@ const SelectComponent = ({
   </FormControl>
 );
 
-const DialogCreateJob = ({ open, handleClose }: IDialogCreateJob) => {
+const DialogCreateTask = ({ open, handleClose }: IDialogCreateTask) => {
   const statusList = [
     "Backlog",
     "Todo",
@@ -149,4 +149,4 @@ const DialogCreateJob = ({ open, handleClose }: IDialogCreateJob) => {
   );
 };
 
-export default DialogCreateJob;
+export default DialogCreateTask;

@@ -15,9 +15,9 @@ import { green } from "@mui/material/colors";
 import { PriorityIcon } from "../utils/renderIcon";
 
 interface IItemProps {
-  id?: IJob | null;
+  task?: ITask | null;
   dragOverlay?: boolean;
-  items?: IJob[];
+  listTask?: ITask[];
 }
 
 const UserStatus = () => (
@@ -32,7 +32,7 @@ const UserStatus = () => (
   />
 );
 
-const Item = ({ id, dragOverlay }: IItemProps) => {
+const Item = ({ task, dragOverlay }: IItemProps) => {
   return (
     <Box sx={{ cursor: dragOverlay ? "grabbing" : "grab" }}>
       <Card
@@ -45,7 +45,7 @@ const Item = ({ id, dragOverlay }: IItemProps) => {
         <CardContent sx={{ padding: "8px 16px 0 16px" }}>
           <Stack direction="row" justifyContent="space-between" spacing={2}>
             <Typography variant="body2" color="darkgrey">
-              {id?.title}
+              {task?.title}
             </Typography>
             <Badge
               overlap="circular"
@@ -53,21 +53,21 @@ const Item = ({ id, dragOverlay }: IItemProps) => {
               badgeContent={<UserStatus />}
             >
               <Avatar
-                src={id?.assignee.avatarUrl}
+                src={task?.assignee.avatarUrl}
                 sx={{ width: 24, height: 24 }}
               >
-                {!id?.assignee.avatarUrl && id?.assignee.name[0]}
+                {!task?.assignee.avatarUrl && task?.assignee.name[0]}
               </Avatar>
             </Badge>
           </Stack>
           <Typography variant="subtitle2" sx={{ marginTop: 0.8 }}>
-            {id?.description}
+            {task?.description}
           </Typography>
         </CardContent>
         <CardActions>
           <IconButton>
             {/* @ts-expect-error */}
-            {PriorityIcon(id?.priority)}
+            {PriorityIcon(task?.priority)}
           </IconButton>
         </CardActions>
       </Card>

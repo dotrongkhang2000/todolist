@@ -5,7 +5,7 @@ declare global {
     online: boolean;
   }
 
-  interface IJob {
+  interface ITask {
     title?: string;
     description?: string;
     status:
@@ -18,6 +18,14 @@ declare global {
     priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent";
     assignee: IUserInfo;
   }
+
+  type TaskGroupTitle =
+    | "Backlog"
+    | "Todo"
+    | "In Progress"
+    | "In Review"
+    | "Done"
+    | "Canceled";
 }
 
 export {};
