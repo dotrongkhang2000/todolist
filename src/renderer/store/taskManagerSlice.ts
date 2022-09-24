@@ -1,37 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { removeAtIndex } from "../components/utils/handleArray";
 
-const initialTaskManagerState: Record<TaskGroupTitle, ITask[]> = {
-  Backlog: [
-    {
-      title: "TOD-16",
-      description: "Custom layout (with horizontal) the same linear",
-      status: "Todo",
-      priority: "No Priority",
-      assignee: {
-        name: "Assignee",
-        avatarUrl: "",
-        online: false,
-      },
-    },
-  ],
-  Todo: [
-    {
-      title: "TOD-17",
-      description: "Custom layout (with horizontal) the same linear",
-      status: "Todo",
-      priority: "No Priority",
-      assignee: {
-        name: "Assignee",
-        avatarUrl: "",
-        online: false,
-      },
-    },
-  ],
-  "In Progress": [],
-  "In Review": [],
-  Done: [],
-  Canceled: [],
+interface ITaskManagerState {
+  totalTask: number;
+  taskGroups: Record<TaskGroupTitle, ITask[]>;
+}
+
+const initialTaskManagerState: ITaskManagerState = {
+  totalTask: 0,
+  taskGroups: {
+    Backlog: [],
+    Todo: [],
+    "In Progress": [],
+    "In Review": [],
+    Done: [],
+    Canceled: [],
+  },
 };
 
 export const taskManagerSlice = createSlice({
@@ -39,25 +23,28 @@ export const taskManagerSlice = createSlice({
   initialState: initialTaskManagerState,
   reducers: {
     createTask: (state, action: PayloadAction<ITask>) => {
-      state[action.payload.status].push(action.payload);
+      state.taskGroups[action.payload.status].push(action.payload);
+      ++state.totalTask;
     },
     setTaskGroup: (
       state,
       action: PayloadAction<Record<TaskGroupTitle, ITask[]>>
     ) => {
-      Object.assign(state, action.payload);
+      Object.assign(state.taskGroups, action.payload);
     },
     deleteTask: (
       state,
       action: PayloadAction<{ status: TaskGroupTitle; index: number }>
     ) => {
-      state = {
-        ...state,
+      state.taskGroups = {
+        ...state.taskGroups,
         [action.payload.status]: removeAtIndex(
-          state[action.payload.status],
+          state.taskGroups[action.payload.status],
           action.payload.index
         ),
       };
+
+      --state.totalTask;
     },
   },
 });

@@ -6,11 +6,12 @@ import Item from "./Item";
 import { Box } from "@mui/material";
 
 interface ISortableItemProps {
+  idTask: string;
   taskTitle: string;
-  listTask?: ITask[];
+  listTask: ITask[];
 }
 
-const SortableItem = ({ taskTitle, listTask }: ISortableItemProps) => {
+const SortableItem = ({ idTask, taskTitle, listTask }: ISortableItemProps) => {
   const {
     attributes,
     listeners,
@@ -18,9 +19,9 @@ const SortableItem = ({ taskTitle, listTask }: ISortableItemProps) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: taskTitle });
+  } = useSortable({ id: idTask });
 
-  const taskRender = listTask?.find((task) => task.title === taskTitle);
+  const taskRender = listTask.find((task) => task.id === idTask);
 
   return (
     <Box
@@ -34,7 +35,7 @@ const SortableItem = ({ taskTitle, listTask }: ISortableItemProps) => {
       {...attributes}
       {...listeners}
     >
-      <Item task={taskRender} />
+      <Item task={taskRender!} />
     </Box>
   );
 };
