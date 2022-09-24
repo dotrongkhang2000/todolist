@@ -14,7 +14,7 @@ declare global {
       | "In Progress"
       | "In Review"
       | "Done"
-      | "Cancel";
+      | "Canceled";
     priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent";
     assignee: IUserInfo;
   }

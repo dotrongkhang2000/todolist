@@ -20,7 +20,13 @@ import Item from "./Item";
 interface IJob {
   title?: string;
   description?: string;
-  status: "Backlog" | "Todo" | "In Progress" | "In Review" | "Done" | "Cancel";
+  status:
+    | "Backlog"
+    | "Todo"
+    | "In Progress"
+    | "In Review"
+    | "Done"
+    | "Canceled";
   priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent";
   assignee: IUserInfo;
 }
