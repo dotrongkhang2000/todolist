@@ -9,24 +9,24 @@ import { IconButton, List, ListSubheader, Box } from "@mui/material";
 
 import { TitleIcon } from "../utils/renderIcon";
 import { useState } from "react";
-import DialogCreateJob from "../dialogs/dialog-create-job";
+import DialogCreateTask from "../dialogs/dialog-create-task";
 interface DroppableProps {
-  id: string;
-  items?: IJob[];
+  taskTitle: string;
+  listTask?: ITask[];
   activeId?: UniqueIdentifier | null;
 }
 
-const Droppable = ({ id, items }: DroppableProps) => {
-  const { setNodeRef } = useDroppable({ id });
+const Droppable = ({ taskTitle, listTask }: DroppableProps) => {
+  const { setNodeRef } = useDroppable({ id: taskTitle });
 
-  const jobTileList = items?.map((item) => item?.title || "");
+  const taskTileList = listTask?.map((task) => task?.title || "");
 
-  const [openDialogCreateJob, setOpenDialogCreateJob] = useState(false);
+  const [openDialogCreateTask, setOpenDialogCreateTask] = useState(false);
 
   return (
     <SortableContext
-      id={id}
-      items={jobTileList || []}
+      id={taskTitle}
+      items={taskTileList || []}
       strategy={rectSortingStrategy}
     >
       <List
@@ -56,7 +56,7 @@ const Droppable = ({ id, items }: DroppableProps) => {
               }}
             >
               {TitleIcon(
-                id as
+                taskTitle as
                   | "Backlog"
                   | "Todo"
                   | "In Progress"
@@ -64,23 +64,27 @@ const Droppable = ({ id, items }: DroppableProps) => {
                   | "Done"
                   | "Canceled"
               )}
-              {id}
-              <Box sx={{ ml: 1.5 }}>{items?.length}</Box>
+              {taskTitle}
+              <Box sx={{ ml: 1.5 }}>{listTask?.length}</Box>
             </Box>
-            <IconButton onClick={() => setOpenDialogCreateJob(true)}>
+            <IconButton onClick={() => setOpenDialogCreateTask(true)}>
               <AddIcon />
             </IconButton>
           </ListSubheader>
         }
       >
-        {items?.map((item) => (
-          <SortableItem key={item.title} id={item.title || ""} items={items} />
+        {listTask?.map((task) => (
+          <SortableItem
+            key={task.title}
+            taskTitle={task.title || ""}
+            listTask={listTask}
+          />
         ))}
       </List>
 
-      <DialogCreateJob
-        open={openDialogCreateJob}
-        handleClose={() => setOpenDialogCreateJob(false)}
+      <DialogCreateTask
+        open={openDialogCreateTask}
+        handleClose={() => setOpenDialogCreateTask(false)}
       />
     </SortableContext>
   );

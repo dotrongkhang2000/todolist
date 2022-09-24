@@ -16,8 +16,11 @@ import { useState } from "react";
 import Droppable from "./Dropable";
 import { removeAtIndex, insertAtIndex, arrayMove } from "../utils/handleArray";
 import Item from "./Item";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { setTaskGroup } from "../../store/taskManagerSlice";
 
-interface IJob {
+interface ITask {
   title?: string;
   description?: string;
   status:
@@ -30,88 +33,13 @@ interface IJob {
   priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent";
   assignee: IUserInfo;
 }
-interface IJobGroup {
-  [name: string]: IJob[];
-}
 
 const MainWindow = () => {
-  const [jobGroups, setJobGroups] = useState<IJobGroup>({
-    Backlog: [
-      {
-        title: "TOD-16",
-        description: "Custom layout (with horizontal) the same linear",
-        status: "Todo",
-        priority: "No Priority",
-        assignee: {
-          name: "Assignee",
-          avatarUrl: "",
-          online: false,
-        },
-      },
-      {
-        title: "TOD-17",
-        description: "Custom layout (with horizontal) the same linear 2",
-        status: "Todo",
-        priority: "No Priority",
-        assignee: {
-          name: "Assignee",
-          avatarUrl: "",
-          online: false,
-        },
-      },
-      {
-        title: "TOD-18",
-        description: "Custom layout (with horizontal) the same linear 2",
-        status: "Todo",
-        priority: "No Priority",
-        assignee: {
-          name: "Assignee",
-          avatarUrl: "",
-          online: false,
-        },
-      },
-      {
-        title: "TOD-19",
-        description: "Custom layout (with horizontal) the same linear 2",
-        status: "Todo",
-        priority: "No Priority",
-        assignee: {
-          name: "Assignee",
-          avatarUrl: "",
-          online: false,
-        },
-      },
-      {
-        title: "TOD-20",
-        description: "Custom layout (with horizontal) the same linear 2",
-        status: "Todo",
-        priority: "Medium",
-        assignee: {
-          name: "Assignee",
-          avatarUrl: "",
-          online: false,
-        },
-      },
-      {
-        title: "TOD-21",
-        description: "Custom layout (with horizontal) the same linear 2",
-        status: "Todo",
-        priority: "No Priority",
-        assignee: {
-          name: "Assignee",
-          avatarUrl: "",
-          online: false,
-        },
-      },
-    ],
-    Todo: [],
-    "In Progress": [],
-    Done: [],
-    Canceled: [],
-  });
+  const taskGroups = useSelector((state: RootState) => state.taskManager);
+  const dispatch = useDispatch();
 
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
-  const [activeJob, setActiveJob] = useState<IJob | null>(null);
+  const [activeTask, setActiveTask] = useState<ITask | null>(null);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -124,9 +52,10 @@ const MainWindow = () => {
     setActiveId(active?.id);
 
     const activeIndex = active.data.current?.sortable.index;
-    const activeContainer = active.data.current?.sortable.containerId;
-    const job = jobGroups[activeContainer][activeIndex];
-    setActiveJob(job);
+    const activeContainer: TaskGroupTitle =
+      active.data.current?.sortable.containerId;
+    const task = taskGroups[activeContainer][activeIndex];
+    setActiveTask(task);
   };
 
   const handleDragCancel = () => setActiveId(null);
@@ -140,25 +69,25 @@ const MainWindow = () => {
     const activeContainer = active.data.current?.sortable.containerId;
     const overContainer = over.data.current?.sortable.containerId || over.id;
 
-    if (activeContainer !== overContainer) {
-      setJobGroups((jobGroups) => {
-        const activeIndex = active.data.current?.sortable.index;
-        const overIndex =
-          over.id in jobGroups
-            ? jobGroups[overContainer as keyof typeof jobGroups].length + 1
-            : over.data.current?.sortable.index;
-        const job = jobGroups[activeContainer][activeIndex];
-        setActiveJob(job);
+    const activeIndex = active.data.current?.sortable.index;
+    const overIndex =
+      over.id in taskGroups
+        ? taskGroups[overContainer as keyof typeof taskGroups].length + 1
+        : over.data.current?.sortable.index;
+    const task = taskGroups[activeContainer as TaskGroupTitle][activeIndex];
+    setActiveTask(task);
 
-        return moveBetweenContainers(
-          jobGroups,
-          activeContainer,
-          activeIndex,
-          overContainer,
-          overIndex,
-          job
-        );
-      });
+    const newTaskGroup = moveBetweenContainers(
+      taskGroups,
+      activeContainer,
+      activeIndex,
+      overContainer,
+      overIndex,
+      task
+    );
+
+    if (activeContainer !== overContainer) {
+      dispatch(setTaskGroup(newTaskGroup));
     }
   };
 
@@ -173,53 +102,58 @@ const MainWindow = () => {
       const overContainer = over.data.current?.sortable.containerId || over.id;
       const activeIndex = active.data.current?.sortable.index;
       const overIndex =
-        over.id in jobGroups
-          ? jobGroups[overContainer as keyof typeof jobGroups].length + 1
+        over.id in taskGroups
+          ? taskGroups[overContainer as TaskGroupTitle].length + 1
           : over.data.current?.sortable.index;
 
-      setJobGroups((job) => {
-        let newItems;
-        if (activeContainer === overContainer) {
-          newItems = {
-            ...job,
-            [overContainer]: arrayMove(
-              job[overContainer as keyof typeof jobGroups],
-              activeIndex,
-              overIndex
-            ),
-          };
-        } else {
-          setActiveJob(activeContainer[active.id]);
-
-          newItems = moveBetweenContainers(
-            jobGroups,
-            activeContainer,
+      let newItems;
+      if (activeContainer === overContainer) {
+        newItems = {
+          ...taskGroups,
+          [overContainer]: arrayMove(
+            taskGroups[overContainer as TaskGroupTitle],
             activeIndex,
-            overContainer,
-            overIndex,
-            activeContainer[active.id]
-          );
-        }
+            overIndex
+          ),
+        };
+      } else {
+        setActiveTask(activeContainer[active.id]);
 
-        return newItems;
-      });
+        newItems = moveBetweenContainers(
+          taskGroups,
+          activeContainer,
+          activeIndex,
+          overContainer,
+          overIndex,
+          activeContainer[active.id]
+        );
+      }
+
+      dispatch(setTaskGroup(newItems));
     }
 
     setActiveId(null);
   };
 
   const moveBetweenContainers = (
-    items: IJobGroup,
+    items: Record<TaskGroupTitle, ITask[]>,
     activeContainer: UniqueIdentifier,
     activeIndex: number,
     overContainer: UniqueIdentifier,
     overIndex: number,
-    item: IJob
-  ): IJobGroup => {
+    item: ITask
+  ): Record<TaskGroupTitle, ITask[]> => {
     return {
       ...items,
-      [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
-      [overContainer]: insertAtIndex(items[overContainer], overIndex, item),
+      [activeContainer as TaskGroupTitle]: removeAtIndex(
+        items[activeContainer as TaskGroupTitle],
+        activeIndex
+      ),
+      [overContainer as TaskGroupTitle]: insertAtIndex(
+        items[overContainer as TaskGroupTitle],
+        overIndex,
+        item
+      ),
     };
   };
 
@@ -242,13 +176,13 @@ const MainWindow = () => {
           overflowX: "scroll",
         }}
       >
-        {Object.entries(jobGroups).map(([key, element]) => (
+        {Object.entries(taskGroups).map(([key, element]) => (
           <Box key={key}>
-            <Droppable id={key} items={element} activeId={activeId} />
+            <Droppable taskTitle={key} listTask={element} activeId={activeId} />
           </Box>
         ))}
         <DragOverlay>
-          {activeId ? <Item id={activeJob} dragOverlay /> : null}
+          {activeId ? <Item task={activeTask} dragOverlay /> : null}
         </DragOverlay>
       </Box>
     </DndContext>
