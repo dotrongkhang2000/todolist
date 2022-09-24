@@ -11,22 +11,20 @@ import { TitleIcon } from "../utils/renderIcon";
 import { useState } from "react";
 import DialogCreateTask from "../dialogs/dialog-create-task";
 interface DroppableProps {
-  taskTitle: string;
+  groupName: string;
   listTask?: ITask[];
   activeId?: UniqueIdentifier | null;
 }
 
-const Droppable = ({ taskTitle, listTask }: DroppableProps) => {
-  const { setNodeRef } = useDroppable({ id: taskTitle });
-
-  const taskTileList = listTask?.map((task) => task?.title || "");
+const Droppable = ({ groupName, listTask }: DroppableProps) => {
+  const { setNodeRef } = useDroppable({ id: groupName });
 
   const [openDialogCreateTask, setOpenDialogCreateTask] = useState(false);
 
   return (
     <SortableContext
-      id={taskTitle}
-      items={taskTileList || []}
+      id={groupName}
+      items={listTask || []}
       strategy={rectSortingStrategy}
     >
       <List
@@ -56,7 +54,7 @@ const Droppable = ({ taskTitle, listTask }: DroppableProps) => {
               }}
             >
               {TitleIcon(
-                taskTitle as
+                groupName as
                   | "Backlog"
                   | "Todo"
                   | "In Progress"
@@ -64,7 +62,7 @@ const Droppable = ({ taskTitle, listTask }: DroppableProps) => {
                   | "Done"
                   | "Canceled"
               )}
-              {taskTitle}
+              {groupName}
               <Box sx={{ ml: 1.5 }}>{listTask?.length}</Box>
             </Box>
             <IconButton onClick={() => setOpenDialogCreateTask(true)}>
@@ -75,14 +73,16 @@ const Droppable = ({ taskTitle, listTask }: DroppableProps) => {
       >
         {listTask?.map((task) => (
           <SortableItem
-            key={task.title}
-            taskTitle={task.title || ""}
+            key={task.id}
+            idTask={task.id}
+            taskTitle={task.title}
             listTask={listTask}
           />
         ))}
       </List>
 
       <DialogCreateTask
+        groupName={groupName}
         open={openDialogCreateTask}
         handleClose={() => setOpenDialogCreateTask(false)}
       />

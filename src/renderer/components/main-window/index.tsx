@@ -20,22 +20,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { setTaskGroup } from "../../store/taskManagerSlice";
 
-interface ITask {
-  title?: string;
-  description?: string;
-  status:
-    | "Backlog"
-    | "Todo"
-    | "In Progress"
-    | "In Review"
-    | "Done"
-    | "Canceled";
-  priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent";
-  assignee: IUserInfo;
-}
-
 const MainWindow = () => {
-  const taskGroups = useSelector((state: RootState) => state.taskManager);
+  const taskGroups = useSelector(
+    (state: RootState) => state.taskManager.taskGroups
+  );
+
   const dispatch = useDispatch();
 
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
@@ -178,7 +167,7 @@ const MainWindow = () => {
       >
         {Object.entries(taskGroups).map(([key, element]) => (
           <Box key={key}>
-            <Droppable taskTitle={key} listTask={element} activeId={activeId} />
+            <Droppable groupName={key} listTask={element} activeId={activeId} />
           </Box>
         ))}
         <DragOverlay>

@@ -14,11 +14,15 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { createTask } from "../../store/taskManagerSlice";
 import { PriorityIcon, TitleIcon } from "../utils/renderIcon";
 
 interface IDialogCreateTask {
   open: boolean;
   handleClose: () => void;
+  groupName: string;
 }
 
 interface ISelectComponentProps {
@@ -81,7 +85,22 @@ const SelectComponent = ({
   </FormControl>
 );
 
-const DialogCreateTask = ({ open, handleClose }: IDialogCreateTask) => {
+const DialogCreateTask = ({
+  open,
+  handleClose,
+  groupName,
+}: IDialogCreateTask) => {
+  const dispatch = useDispatch();
+  const totalTask = useSelector(
+    (state: RootState) => state.taskManager.totalTask
+  );
+
+  const [task, setTask] = useState<ITask>({
+    id: "",
+    title: "",
+    status: groupName as TaskStatus,
+    priority: "No Priority",
+  });
   const statusList = [
     "Backlog",
     "Todo",
@@ -92,12 +111,21 @@ const DialogCreateTask = ({ open, handleClose }: IDialogCreateTask) => {
   ];
   const priorityList = ["No Priority", "Low", "Medium", "High", "Urgent"];
 
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
+  const handleChange = (taskChange: Partial<ITask>) => {
+    setTask({ ...task, ...taskChange });
+  };
 
-  const handleChange = (event: SelectChangeEvent, label: string) => {
-    if (label === "Status") setStatus(event.target.value);
-    if (label === "Priority") setPriority(event.target.value);
+  const handleSubmit = () => {
+    const newTask: ITask = {
+      id: `TOD-${totalTask + 1}`,
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      priority: task.priority,
+    };
+
+    dispatch(createTask(newTask));
+    handleClose();
   };
 
   return (
@@ -112,6 +140,7 @@ const DialogCreateTask = ({ open, handleClose }: IDialogCreateTask) => {
             variant="standard"
             fullWidth
             sx={{ mb: 2 }}
+            onChange={(e) => handleChange({ title: e.target.value })}
           />
           <TextField
             id="filled-multiline-flexible"
@@ -120,19 +149,24 @@ const DialogCreateTask = ({ open, handleClose }: IDialogCreateTask) => {
             maxRows={4}
             variant="standard"
             fullWidth
+            onChange={(e) => handleChange({ description: e.target.value })}
           />
           <Box>
             <SelectComponent
               selectItemList={statusList}
               label="Status"
-              item={status}
-              handleChange={(e) => handleChange(e, "Status")}
+              item={task.status}
+              handleChange={(e) =>
+                handleChange({ status: e.target.value as TaskStatus })
+              }
             />
             <SelectComponent
               selectItemList={priorityList}
               label="Priority"
-              item={priority}
-              handleChange={(e) => handleChange(e, "Priority")}
+              item={task.priority}
+              handleChange={(e) =>
+                handleChange({ priority: e.target.value as TaskPriority })
+              }
             />
           </Box>
         </DialogContentText>
@@ -141,7 +175,7 @@ const DialogCreateTask = ({ open, handleClose }: IDialogCreateTask) => {
         <Button onClick={handleClose} variant="outlined">
           Cancel
         </Button>
-        <Button onClick={handleClose} autoFocus variant="contained">
+        <Button onClick={handleSubmit} autoFocus variant="contained">
           Create issue
         </Button>
       </DialogActions>
