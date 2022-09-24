@@ -8,6 +8,8 @@ import { Add as AddIcon } from "@mui/icons-material";
 import { IconButton, List, ListSubheader, Box } from "@mui/material";
 
 import { TitleIcon } from "../utils/renderIcon";
+import { useState } from "react";
+import DialogCreateJob from "../dialogs/dialog-create-job";
 interface DroppableProps {
   id: string;
   items?: IJob[];
@@ -18,6 +20,8 @@ const Droppable = ({ id, items }: DroppableProps) => {
   const { setNodeRef } = useDroppable({ id });
 
   const jobTileList = items?.map((item) => item?.title || "");
+
+  const [openDialogCreateJob, setOpenDialogCreateJob] = useState(false);
 
   return (
     <SortableContext
@@ -63,7 +67,7 @@ const Droppable = ({ id, items }: DroppableProps) => {
               {id}
               <Box sx={{ ml: 1.5 }}>{items?.length}</Box>
             </Box>
-            <IconButton>
+            <IconButton onClick={() => setOpenDialogCreateJob(true)}>
               <AddIcon />
             </IconButton>
           </ListSubheader>
@@ -73,6 +77,11 @@ const Droppable = ({ id, items }: DroppableProps) => {
           <SortableItem key={item.title} id={item.title || ""} items={items} />
         ))}
       </List>
+
+      <DialogCreateJob
+        open={openDialogCreateJob}
+        handleClose={() => setOpenDialogCreateJob(false)}
+      />
     </SortableContext>
   );
 };

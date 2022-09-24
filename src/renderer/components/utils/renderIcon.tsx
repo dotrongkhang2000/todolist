@@ -19,15 +19,15 @@ export const PriorityIcon = (
 ) => {
   switch (priority) {
     case "Low":
-      return <SignalCellular1BarIcon sx={{ fontSize: "1rem" }} />;
+      return <SignalCellular1BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
     case "Medium":
-      return <SignalCellular2BarIcon sx={{ fontSize: "1rem" }} />;
+      return <SignalCellular2BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
     case "High":
-      return <SignalCellular3BarIcon sx={{ fontSize: "1rem" }} />;
+      return <SignalCellular3BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
     case "Urgent":
-      return <SignalCellular4BarIcon sx={{ fontSize: "1rem" }} />;
+      return <SignalCellular4BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
     default:
-      return <SignalCellular0BarIcon sx={{ fontSize: "1rem" }} />;
+      return <SignalCellular0BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
   }
 };
 
