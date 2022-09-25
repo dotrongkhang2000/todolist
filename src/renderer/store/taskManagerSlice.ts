@@ -37,14 +37,18 @@ export const taskManagerSlice = createSlice({
     },
     deleteTask: (
       state,
-      action: PayloadAction<{ status: TaskGroupTitle; index: number }>
+      action: PayloadAction<{ status: TaskGroupTitle; taskId: string }>
     ) => {
+      console.log("handle delete task");
+      const { status, taskId } = action.payload;
+
+      const indexTask = state.taskGroups[status].findIndex(
+        (t) => t.id === taskId
+      );
+
       state.taskGroups = {
         ...state.taskGroups,
-        [action.payload.status]: removeAtIndex(
-          state.taskGroups[action.payload.status],
-          action.payload.index
-        ),
+        [status]: removeAtIndex(state.taskGroups[status], indexTask),
       };
 
       --state.totalTask;

@@ -4,9 +4,9 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -19,6 +19,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateTask } from "../../store/taskManagerSlice";
 import { PriorityIcon, TitleIcon } from "../utils/renderIcon";
+import { DeleteForever as DeleteForeverIcon } from "@mui/icons-material";
+import DialogDeleteTask from "./dialog-delete-task";
 
 interface IDialogDetailTask {
   open: boolean;
@@ -100,6 +102,8 @@ const DialogDetailTask = ({
 
   const [task, setTask] = useState(taskRender);
 
+  const [openDialogDeleteTask, setOpenDialogDeleteTask] = useState(false);
+
   const statusList = [
     "Backlog",
     "Todo",
@@ -122,57 +126,71 @@ const DialogDetailTask = ({
 
   return (
     <Dialog fullWidth open={open} onClose={() => handleClose()}>
-      <DialogTitle id="alert-dialog-title">{task.id}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">
+        {task.id}
+        <IconButton
+          sx={{ float: "right", p: 1, top: -5, right: -16 }}
+          onClick={() => setOpenDialogDeleteTask(true)}
+        >
+          <DeleteForeverIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          <TextField
-            required
-            id="task-title"
-            label="Issue title"
-            variant="standard"
-            fullWidth
-            sx={{ mb: 2 }}
-            value={task.title}
-            onChange={(e) => handleChange({ title: e.target.value })}
+        <TextField
+          required
+          id="task-title"
+          label="Issue title"
+          variant="standard"
+          fullWidth
+          sx={{ mb: 2 }}
+          value={task.title}
+          onChange={(e) => handleChange({ title: e.target.value })}
+        />
+        <TextField
+          id="task-description"
+          label="Add description..."
+          multiline
+          maxRows={4}
+          variant="standard"
+          fullWidth
+          value={task.description}
+          onChange={(e) => handleChange({ description: e.target.value })}
+        />
+        <Box>
+          <SelectComponent
+            selectItemList={statusList}
+            label="Status"
+            item={task.status}
+            handleChange={(e) =>
+              handleChange({ status: e.target.value as TaskStatus })
+            }
           />
-          <TextField
-            id="task-description"
-            label="Add description..."
-            multiline
-            maxRows={4}
-            variant="standard"
-            fullWidth
-            value={task.description}
-            onChange={(e) => handleChange({ description: e.target.value })}
+          <SelectComponent
+            selectItemList={priorityList}
+            label="Priority"
+            item={task.priority}
+            handleChange={(e) =>
+              handleChange({ priority: e.target.value as TaskPriority })
+            }
           />
-          <Box>
-            <SelectComponent
-              selectItemList={statusList}
-              label="Status"
-              item={task.status}
-              handleChange={(e) =>
-                handleChange({ status: e.target.value as TaskStatus })
-              }
-            />
-            <SelectComponent
-              selectItemList={priorityList}
-              label="Priority"
-              item={task.priority}
-              handleChange={(e) =>
-                handleChange({ priority: e.target.value as TaskPriority })
-              }
-            />
-          </Box>
-        </DialogContentText>
-        <DialogActions>
-          <Button onClick={handleClose} variant="outlined">
-            Cancel
-          </Button>
-          <Button onClick={() => handleSaveBtn()} autoFocus variant="contained">
-            Save
-          </Button>
-        </DialogActions>
+        </Box>
       </DialogContent>
+      <DialogActions sx={{ p: 2 }}>
+        <Button onClick={handleClose} variant="outlined">
+          Cancel
+        </Button>
+        <Button onClick={() => handleSaveBtn()} autoFocus variant="contained">
+          Save
+        </Button>
+      </DialogActions>
+
+      <DialogDeleteTask
+        open={openDialogDeleteTask}
+        handleClose={() => {
+          setOpenDialogDeleteTask(false);
+        }}
+        task={taskRender}
+      />
     </Dialog>
   );
 };
