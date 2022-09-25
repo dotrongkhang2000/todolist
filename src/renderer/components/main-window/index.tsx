@@ -38,7 +38,7 @@ const MainWindow = () => {
     }),
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 20,
+        distance: 1,
       },
     })
   );
@@ -69,8 +69,13 @@ const MainWindow = () => {
       over.id in taskGroups
         ? taskGroups[overContainer as keyof typeof taskGroups].length + 1
         : over.data.current?.sortable.index;
-    const task = taskGroups[activeContainer as TaskGroupTitle][activeIndex];
+    const task = {
+      ...taskGroups[activeContainer as TaskGroupTitle][activeIndex],
+    };
     setActiveTask(task);
+
+    //change task status for new group
+    task.status = overContainer;
 
     const newTaskGroup = moveBetweenContainers(
       taskGroups,
@@ -101,7 +106,8 @@ const MainWindow = () => {
           ? taskGroups[overContainer as TaskGroupTitle].length + 1
           : over.data.current?.sortable.index;
 
-      let newItems;
+      let newItems: Record<TaskGroupTitle, ITask[]>;
+
       if (activeContainer === overContainer) {
         newItems = {
           ...taskGroups,
