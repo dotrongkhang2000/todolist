@@ -139,7 +139,7 @@ const DialogCreateTask = ({
     <Dialog fullWidth open={open} onClose={() => handleClose()}>
       <DialogTitle id="alert-dialog-title">New issue</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
+        <DialogContent sx={{ p: 0 }}>
           <TextField
             required
             id="standard-error-helper-text"
@@ -176,9 +176,9 @@ const DialogCreateTask = ({
               }
             />
           </Box>
-        </DialogContentText>
+        </DialogContent>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ p: 2 }}>
         <Button onClick={handleClose} variant="outlined">
           Cancel
         </Button>
