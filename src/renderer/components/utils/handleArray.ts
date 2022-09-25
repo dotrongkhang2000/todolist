@@ -13,3 +13,11 @@ export const insertAtIndex = (arr: ITask[], index: number, item: ITask) => [
 export const arrayMove = (arr: ITask[], oldIndex: number, newIndex: number) => {
   return DndKitSortArray(arr, oldIndex, newIndex);
 };
+
+export const updateArrAtIndex = (arr: ITask[], task: ITask) => {
+  const indexTask = arr.findIndex((t) => t.id === task.id);
+
+  arr[indexTask] = task;
+
+  return arr;
+};

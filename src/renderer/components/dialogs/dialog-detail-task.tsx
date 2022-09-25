@@ -16,15 +16,14 @@ import {
   Theme,
 } from "@mui/material";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { createTask } from "../../store/taskManagerSlice";
+import { useDispatch } from "react-redux";
+import { updateTask } from "../../store/taskManagerSlice";
 import { PriorityIcon, TitleIcon } from "../utils/renderIcon";
 
-interface IDialogCreateTask {
+interface IDialogDetailTask {
   open: boolean;
   handleClose: () => void;
-  groupName: string;
+  taskRender: ITask;
 }
 
 interface ISelectComponentProps {
@@ -92,22 +91,15 @@ const SelectComponent = ({
   </FormControl>
 );
 
-const DialogCreateTask = ({
+const DialogDetailTask = ({
   open,
   handleClose,
-  groupName,
-}: IDialogCreateTask) => {
+  taskRender,
+}: IDialogDetailTask) => {
   const dispatch = useDispatch();
-  const totalTask = useSelector(
-    (state: RootState) => state.taskManager.totalTask
-  );
 
-  const [task, setTask] = useState<ITask>({
-    id: "",
-    title: "",
-    status: groupName as TaskStatus,
-    priority: "No Priority",
-  });
+  const [task, setTask] = useState(taskRender);
+
   const statusList = [
     "Backlog",
     "Todo",
@@ -122,40 +114,35 @@ const DialogCreateTask = ({
     setTask({ ...task, ...taskChange });
   };
 
-  const handleSubmit = () => {
-    const newTask: ITask = {
-      id: `TOD-${totalTask + 1}`,
-      title: task.title,
-      description: task.description,
-      status: task.status,
-      priority: task.priority,
-    };
+  const handleSaveBtn = () => {
+    dispatch(updateTask(task));
 
-    dispatch(createTask(newTask));
     handleClose();
   };
 
   return (
     <Dialog fullWidth open={open} onClose={() => handleClose()}>
-      <DialogTitle id="alert-dialog-title">New issue</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{task.id}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           <TextField
             required
-            id="standard-error-helper-text"
+            id="task-title"
             label="Issue title"
             variant="standard"
             fullWidth
             sx={{ mb: 2 }}
+            value={task.title}
             onChange={(e) => handleChange({ title: e.target.value })}
           />
           <TextField
-            id="filled-multiline-flexible"
+            id="task-description"
             label="Add description..."
             multiline
             maxRows={4}
             variant="standard"
             fullWidth
+            value={task.description}
             onChange={(e) => handleChange({ description: e.target.value })}
           />
           <Box>
@@ -177,17 +164,17 @@ const DialogCreateTask = ({
             />
           </Box>
         </DialogContentText>
+        <DialogActions>
+          <Button onClick={handleClose} variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={() => handleSaveBtn()} autoFocus variant="contained">
+            Save
+          </Button>
+        </DialogActions>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} variant="outlined">
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} autoFocus variant="contained">
-          Create issue
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };
 
-export default DialogCreateTask;
+export default DialogDetailTask;

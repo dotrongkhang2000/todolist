@@ -6,6 +6,7 @@ import {
   DragStartEvent,
   KeyboardSensor,
   MouseSensor,
+  PointerSensor,
   UniqueIdentifier,
   useSensor,
   useSensors,
@@ -34,6 +35,11 @@ const MainWindow = () => {
     useSensor(MouseSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
+    }),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 20,
+      },
     })
   );
 
