@@ -25,7 +25,6 @@ const SortableItem = ({ idTask, taskTitle, listTask }: ISortableItemProps) => {
 
   return (
     <Box
-      component="li"
       sx={{
         transform: CSS.Transform.toString(transform),
         transition,

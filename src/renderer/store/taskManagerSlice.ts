@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { removeAtIndex } from "../components/utils/handleArray";
+import {
+  removeAtIndex,
+  updateArrAtIndex,
+} from "../components/utils/handleArray";
 
 interface ITaskManagerState {
   totalTask: number;
@@ -46,11 +49,23 @@ export const taskManagerSlice = createSlice({
 
       --state.totalTask;
     },
+    updateTask: (state, action: PayloadAction<ITask>) => {
+      const taskGroupTitle = action.payload.status;
+      const task = action.payload;
+
+      state.taskGroups = {
+        ...state.taskGroups,
+        [taskGroupTitle]: updateArrAtIndex(
+          state.taskGroups[taskGroupTitle],
+          task
+        ),
+      };
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { deleteTask, createTask, setTaskGroup } =
+export const { deleteTask, createTask, setTaskGroup, updateTask } =
   taskManagerSlice.actions;
 
 export default taskManagerSlice.reducer;

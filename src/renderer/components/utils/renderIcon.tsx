@@ -11,23 +11,35 @@ import {
   PauseCircleFilled as PauseCircleFilledIcon,
   ChangeCircle as ChangeCircleIcon,
 } from "@mui/icons-material";
+import { SxProps, Theme } from "@mui/material";
 
 import { yellow } from "@mui/material/colors";
 
 export const PriorityIcon = (
-  priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent"
+  priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent",
+  style?: SxProps<Theme>
 ) => {
   switch (priority) {
     case "Low":
-      return <SignalCellular1BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
+      return (
+        <SignalCellular1BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+      );
     case "Medium":
-      return <SignalCellular2BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
+      return (
+        <SignalCellular2BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+      );
     case "High":
-      return <SignalCellular3BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
+      return (
+        <SignalCellular3BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+      );
     case "Urgent":
-      return <SignalCellular4BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
+      return (
+        <SignalCellular4BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+      );
     default:
-      return <SignalCellular0BarIcon sx={{ fontSize: "1rem", mr: 1 }} />;
+      return (
+        <SignalCellular0BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+      );
   }
 };
 

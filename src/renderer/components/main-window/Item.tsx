@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 
 import { green } from "@mui/material/colors";
+import { useState } from "react";
+import DialogDetailTask from "../dialogs/dialog-detail-task";
 
 import { PriorityIcon } from "../utils/renderIcon";
 
@@ -32,14 +34,28 @@ const UserStatus = () => (
 );
 
 const Item = ({ task, dragOverlay }: IItemProps) => {
+  const [openDialogDetailTask, setOpenDialogDetailTask] = useState(false);
+
+  const handleClickEvent = () => {
+    setOpenDialogDetailTask(true);
+  };
+
   return (
-    <Box sx={{ cursor: dragOverlay ? "grabbing" : "grab" }}>
+    <Box
+      sx={{
+        cursor: dragOverlay ? "grabbing" : "default",
+      }}
+    >
       <Card
         sx={{
           width: 326,
           mb: 1,
           mx: "auto",
+          "&:hover": {
+            backgroundColor: dragOverlay ? "#fff" : "#eee",
+          },
         }}
+        onClick={() => handleClickEvent()}
       >
         <CardContent sx={{ padding: "8px 16px 0 16px" }}>
           <Stack direction="row" justifyContent="space-between" spacing={2}>
@@ -67,6 +83,12 @@ const Item = ({ task, dragOverlay }: IItemProps) => {
           <IconButton>{PriorityIcon(task?.priority!)}</IconButton>
         </CardActions>
       </Card>
+
+      <DialogDetailTask
+        open={openDialogDetailTask}
+        handleClose={() => setOpenDialogDetailTask(false)}
+        taskRender={task!}
+      />
     </Box>
   );
 };
