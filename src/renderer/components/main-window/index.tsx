@@ -20,6 +20,7 @@ import Item from "./Item";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { setTaskGroup } from "../../store/taskManagerSlice";
+import Sidebar from "../side-bar";
 
 const MainWindow = () => {
   const taskGroups = useSelector(
@@ -159,34 +160,41 @@ const MainWindow = () => {
   };
 
   return (
-    <DndContext
-      sensors={sensors}
-      onDragStart={handleDragStart}
-      onDragCancel={handleDragCancel}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-    >
-      <Box
-        sx={{
-          display: "-webkit-box",
-          justifyContent: "space-around",
-          p: 1,
-          backgroundImage:
-            "linear-gradient(to bottom right, #321D81 , #DD499D)",
-          height: "100vh",
-          overflowX: "scroll",
-        }}
+    <Box sx={{ display: "flex" }}>
+      <Sidebar />
+      <DndContext
+        sensors={sensors}
+        onDragStart={handleDragStart}
+        onDragCancel={handleDragCancel}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
       >
-        {Object.entries(taskGroups).map(([key, element]) => (
-          <Box key={key}>
-            <Droppable groupName={key} listTask={element} activeId={activeId} />
-          </Box>
-        ))}
-        <DragOverlay>
-          {activeId ? <Item task={activeTask} dragOverlay /> : null}
-        </DragOverlay>
-      </Box>
-    </DndContext>
+        <Box
+          sx={{
+            display: "-webkit-box",
+            justifyContent: "space-around",
+            p: 1,
+            backgroundImage:
+              "linear-gradient(to bottom right, #321D81 , #DD499D)",
+            height: "100vh",
+            overflowX: "scroll",
+          }}
+        >
+          {Object.entries(taskGroups).map(([key, element]) => (
+            <Box key={key}>
+              <Droppable
+                groupName={key}
+                listTask={element}
+                activeId={activeId}
+              />
+            </Box>
+          ))}
+          <DragOverlay>
+            {activeId ? <Item task={activeTask} dragOverlay /> : null}
+          </DragOverlay>
+        </Box>
+      </DndContext>
+    </Box>
   );
 };
 
