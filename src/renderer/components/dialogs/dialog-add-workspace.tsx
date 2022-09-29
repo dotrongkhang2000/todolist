@@ -5,8 +5,8 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-} from "@mui/material";
-import { useState } from "react";
+} from '@mui/material';
+import React, { useState } from 'react';
 
 interface IDialogAddWorkspace {
   open: boolean;
@@ -22,9 +22,9 @@ const DialogAddWorkspace = ({
   totalWorkspace,
 }: IDialogAddWorkspace) => {
   const [workspace, setWorkspace] = useState<IWorkspace>({
-    id: "",
-    name: "",
-    imgUrl: "",
+    id: '',
+    name: '',
+    imgUrl: '',
   });
 
   console.log(totalWorkspace);

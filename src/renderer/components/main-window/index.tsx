@@ -10,17 +10,17 @@ import {
   UniqueIdentifier,
   useSensor,
   useSensors,
-} from "@dnd-kit/core";
-import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { Box } from "@mui/material";
-import { useState } from "react";
-import Droppable from "./Dropable";
-import { removeAtIndex, insertAtIndex, arrayMove } from "../utils/handleArray";
-import Item from "./Item";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { setTaskGroup } from "../../store/taskManagerSlice";
-import Sidebar from "../side-bar";
+} from '@dnd-kit/core';
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { Box } from '@mui/material';
+import React, { useState } from 'react';
+import Droppable from './Dropable';
+import { removeAtIndex, insertAtIndex, arrayMove } from '../utils/handleArray';
+import Item from './Item';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { setTaskGroup } from '../../store/taskManagerSlice';
+import Sidebar from '../side-bar';
 
 const MainWindow = () => {
   const taskGroups = useSelector(
@@ -58,24 +58,24 @@ const MainWindow = () => {
   const handleDragOver = ({ active, over }: DragOverEvent) => {
     const overId = over?.id;
 
-    if (!overId) {
+    if (overId === undefined) {
       return;
     }
 
     const activeContainer = active.data.current?.sortable.containerId;
-    const overContainer = over.data.current?.sortable.containerId || over.id;
+    const overContainer = over!.data.current?.sortable.containerId ?? over!.id;
 
     const activeIndex = active.data.current?.sortable.index;
     const overIndex =
-      over.id in taskGroups
+      over!.id in taskGroups
         ? taskGroups[overContainer as keyof typeof taskGroups].length + 1
-        : over.data.current?.sortable.index;
+        : over!.data.current?.sortable.index;
     const task = {
       ...taskGroups[activeContainer as TaskGroupTitle][activeIndex],
     };
     setActiveTask(task);
 
-    //change task status for new group
+    // change task status for new group
     task.status = overContainer;
 
     const newTaskGroup = moveBetweenContainers(
@@ -93,14 +93,14 @@ const MainWindow = () => {
   };
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
-    if (!over) {
+    if (over == null) {
       setActiveId(null);
       return;
     }
 
     if (active.id !== over.id) {
       const activeContainer = active.data.current?.sortable.containerId;
-      const overContainer = over.data.current?.sortable.containerId || over.id;
+      const overContainer = over.data.current?.sortable.containerId ?? over.id;
       const activeIndex = active.data.current?.sortable.index;
       const overIndex =
         over.id in taskGroups
@@ -160,7 +160,7 @@ const MainWindow = () => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <Sidebar />
       <DndContext
         sensors={sensors}
@@ -171,13 +171,13 @@ const MainWindow = () => {
       >
         <Box
           sx={{
-            display: "-webkit-box",
-            justifyContent: "space-around",
+            display: '-webkit-box',
+            justifyContent: 'space-around',
             p: 1,
             backgroundImage:
-              "linear-gradient(to bottom right, #321D81 , #DD499D)",
-            height: "100vh",
-            overflowX: "scroll",
+              'linear-gradient(to bottom right, #321D81 , #DD499D)',
+            height: '100vh',
+            overflowX: 'scroll',
           }}
         >
           {Object.entries(taskGroups).map(([key, element]) => (
@@ -190,7 +190,7 @@ const MainWindow = () => {
             </Box>
           ))}
           <DragOverlay>
-            {activeId ? <Item task={activeTask} dragOverlay /> : null}
+            {activeId !== null ? <Item task={activeTask} dragOverlay /> : null}
           </DragOverlay>
         </Box>
       </DndContext>

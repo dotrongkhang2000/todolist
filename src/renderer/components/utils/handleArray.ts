@@ -1,4 +1,4 @@
-import { arrayMove as DndKitSortArray } from "@dnd-kit/sortable";
+import { arrayMove as DndKitSortArray } from '@dnd-kit/sortable';
 
 export const removeAtIndex = (arr: ITask[], index: number) => {
   return arr.filter((_, _index) => _index !== index);

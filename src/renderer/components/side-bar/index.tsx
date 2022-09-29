@@ -1,6 +1,6 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from '@mui/material';
 
-import { Add as AddIcon } from "@mui/icons-material";
+import { Add as AddIcon } from '@mui/icons-material';
 import {
   closestCenter,
   DndContext,
@@ -11,15 +11,15 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-} from "@dnd-kit/core";
-import { useState } from "react";
+} from '@dnd-kit/core';
+import React, { useState } from 'react';
 
-import { arrayMove as DndKitSortArray } from "@dnd-kit/sortable";
-import Droppable from "./Droppable";
-import Workspace from "./Workspace";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import DialogAddWorkspace from "../dialogs/dialog-add-workspace";
-import BootstrapTooltip from "../utils/BootstrapTooltip";
+import { arrayMove as DndKitSortArray } from '@dnd-kit/sortable';
+import Droppable from './Droppable';
+import Workspace from './Workspace';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import DialogAddWorkspace from '../dialogs/dialog-add-workspace';
+import BootstrapTooltip from '../utils/BootstrapTooltip';
 
 const Sidebar = () => {
   const listWorkspaceInit: IWorkspace[] = [];
@@ -83,9 +83,9 @@ const Sidebar = () => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
       <DndContext
@@ -99,11 +99,11 @@ const Sidebar = () => {
         <Box
           sx={{
             width: 70,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            overflowY: "auto",
-            maxHeight: "80vh",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            overflowY: 'auto',
+            maxHeight: '80vh',
           }}
         >
           {listWorkspace.map((workspace) => (
@@ -126,8 +126,8 @@ const Sidebar = () => {
               m: 0.3,
               mt: 1,
               p: 1,
-              "&:hover": {
-                background: "none",
+              '&:hover': {
+                background: 'none',
               },
             }}
             onClick={() => setOpenDialogAddWorkspace(true)}

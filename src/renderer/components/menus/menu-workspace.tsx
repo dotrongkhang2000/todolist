@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   MenuItem,
   ListItemText,
@@ -5,9 +6,8 @@ import {
   Typography,
   Menu,
   Divider,
-} from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
-// import DialogDelete from "../dialogs/dialog-delete-task";
+} from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
 // import { useState } from "react";
 
 interface IMenuWorkspaceProps {
@@ -31,7 +31,7 @@ const MenuWorkspace = ({
 
   const listMenuItem: IMenuItem[] = [
     {
-      name: "Edit",
+      name: 'Edit',
       icon: <Edit fontSize="small" />,
     },
   ];
@@ -42,11 +42,11 @@ const MenuWorkspace = ({
 
   return (
     <Menu
-      sx={{ width: 320, maxWidth: "100%" }}
+      sx={{ width: 320, maxWidth: '100%' }}
       open={Boolean(anchorEl)}
       onClose={() => handleClose()}
       anchorEl={anchorEl}
-      anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+      anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
     >
       {listMenuItem.map((menuItem) => (
         <MenuItem key={menuItem.name}>

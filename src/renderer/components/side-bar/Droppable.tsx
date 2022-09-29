@@ -1,5 +1,6 @@
-import { SortableContext } from "@dnd-kit/sortable";
-import SortableWorkspace from "./SortableItem";
+import { SortableContext } from '@dnd-kit/sortable';
+import SortableWorkspace from './SortableItem';
+import React from 'react';
 
 interface IDropableProps {
   workspaceId: string;
