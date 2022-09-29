@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   MenuItem,
   ListItemText,
@@ -8,7 +7,8 @@ import {
   Divider,
 } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-// import { useState } from "react";
+import React, { useState } from 'react';
+import DialogDelete from '../dialogs/dialog-delete';
 
 interface IMenuWorkspaceProps {
   anchorEl: HTMLElement | null;
@@ -26,8 +26,8 @@ const MenuWorkspace = ({
   handleClose,
   workspace,
 }: IMenuWorkspaceProps) => {
-  // const [openDialogDeleteWorkspace, setOpenDialogDeleteWorkspace] =
-  //   useState(false);
+  const [openDialogDeleteWorkspace, setOpenDialogDeleteWorkspace] =
+    useState(false);
 
   const listMenuItem: IMenuItem[] = [
     {
@@ -36,45 +36,47 @@ const MenuWorkspace = ({
     },
   ];
 
-  // const handleDeleteWorkspace = () => {
-  //   setOpenDialogDeleteWorkspace(true);
-  // };
+  const handleDeleteWorkspace = () => {
+    handleClose();
+
+    setOpenDialogDeleteWorkspace(true);
+  };
 
   return (
-    <Menu
-      sx={{ width: 320, maxWidth: '100%' }}
-      open={Boolean(anchorEl)}
-      onClose={() => handleClose()}
-      anchorEl={anchorEl}
-      anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-    >
-      {listMenuItem.map((menuItem) => (
-        <MenuItem key={menuItem.name}>
-          <ListItemIcon>{menuItem.icon}</ListItemIcon>
+    <>
+      <Menu
+        sx={{ width: 320, maxWidth: '100%' }}
+        open={Boolean(anchorEl)}
+        onClose={() => handleClose()}
+        anchorEl={anchorEl}
+        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+      >
+        {listMenuItem.map((menuItem) => (
+          <MenuItem key={menuItem.name}>
+            <ListItemIcon>{menuItem.icon}</ListItemIcon>
+            <ListItemText>
+              <Typography variant="body2">{menuItem.name}</Typography>
+            </ListItemText>
+          </MenuItem>
+        ))}
+        <Divider />
+        <MenuItem onClick={() => handleDeleteWorkspace()}>
+          <ListItemIcon>
+            <Delete fontSize="small" />
+          </ListItemIcon>
           <ListItemText>
-            <Typography variant="body2">{menuItem.name}</Typography>
+            <Typography variant="body2">Delete</Typography>
           </ListItemText>
         </MenuItem>
-      ))}
-      <Divider />
-      <MenuItem
-      // onClick={() => handleDeleteWorkspace()}
-      >
-        <ListItemIcon>
-          <Delete fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>
-          <Typography variant="body2">Delete</Typography>
-        </ListItemText>
-      </MenuItem>
+      </Menu>
 
-      {/* <DialogDelete
+      <DialogDelete
         open={openDialogDeleteWorkspace}
         handleClose={() => setOpenDialogDeleteWorkspace(false)}
         dialogName="workspace"
         workspace={workspace}
-      /> */}
-    </Menu>
+      />
+    </>
   );
 };
 

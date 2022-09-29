@@ -20,13 +20,22 @@ import Workspace from './Workspace';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import DialogAddWorkspace from '../dialogs/dialog-add-workspace';
 import BootstrapTooltip from '../utils/BootstrapTooltip';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import {
+  addWorkspace,
+  setListWorkspace,
+} from '../../store/workspaceManagerSlice';
 
 const Sidebar = () => {
-  const listWorkspaceInit: IWorkspace[] = [];
+  const listWorkspace: IWorkspace[] = useSelector(
+    (state: RootState) => state.workspaceManager.listWorkspace
+  );
+
+  const dispatch = useDispatch();
 
   const [openDialogAddWorkspace, setOpenDialogAddWorkspace] = useState(false);
 
-  const [listWorkspace, setListWorkspace] = useState(listWorkspaceInit);
   const [activeWorkspaceId, setActiveWorkspaceId] = useState<string | null>(
     null
   );
@@ -73,11 +82,11 @@ const Sidebar = () => {
       overIndex
     );
 
-    setListWorkspace(newListWorkspace);
+    dispatch(setListWorkspace(newListWorkspace));
   };
 
   const handleAddWorkspace = (workspace: IWorkspace) => {
-    listWorkspace.push(workspace);
+    dispatch(addWorkspace(workspace));
   };
 
   return (

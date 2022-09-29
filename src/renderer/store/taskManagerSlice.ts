@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   removeAtIndex,
-  updateArrAtIndex
+  updateArrAtIndex,
 } from '../components/utils/handleArray';
 
 interface ITaskManagerState {
-  totalTask: number
-  taskGroups: Record<TaskGroupTitle, ITask[]>
+  totalTask: number;
+  taskGroups: Record<TaskGroupTitle, ITask[]>;
 }
 
 const initialTaskManagerState: ITaskManagerState = {
@@ -17,8 +17,8 @@ const initialTaskManagerState: ITaskManagerState = {
     'In Progress': [],
     'In Review': [],
     Done: [],
-    Canceled: []
-  }
+    Canceled: [],
+  },
 };
 
 export const taskManagerSlice = createSlice({
@@ -37,9 +37,8 @@ export const taskManagerSlice = createSlice({
     },
     deleteTask: (
       state,
-      action: PayloadAction<{ status: TaskGroupTitle, taskId: string }>
+      action: PayloadAction<{ status: TaskGroupTitle; taskId: string }>
     ) => {
-      console.log('handle delete task');
       const { status, taskId } = action.payload;
 
       const indexTask = state.taskGroups[status].findIndex(
@@ -48,7 +47,7 @@ export const taskManagerSlice = createSlice({
 
       state.taskGroups = {
         ...state.taskGroups,
-        [status]: removeAtIndex(state.taskGroups[status], indexTask)
+        [status]: removeAtIndex(state.taskGroups[status], indexTask),
       };
 
       --state.totalTask;
@@ -62,10 +61,10 @@ export const taskManagerSlice = createSlice({
         [taskGroupTitle]: updateArrAtIndex(
           state.taskGroups[taskGroupTitle],
           task
-        )
+        ),
       };
-    }
-  }
+    },
+  },
 });
 
 // Action creators are generated for each case reducer function
