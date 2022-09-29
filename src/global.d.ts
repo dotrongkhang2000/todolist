@@ -30,6 +30,13 @@ declare global {
     priority: TaskPriority;
     assignee?: IUserInfo;
   }
+
+  interface IWorkspace {
+    id: string;
+    name: string;
+    taskGroups?: Record<TaskGroupTitle, ITask[]>;
+    imgUrl: string;
+  }
 }
 
 export {};
