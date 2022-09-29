@@ -2,6 +2,8 @@ import { Avatar, Box, Typography } from "@mui/material";
 
 import { Assignment as AssignmentIcon } from "@mui/icons-material";
 import BootstrapTooltip from "../utils/BootstrapTooltip";
+import { useState } from "react";
+import MenuWorkspace from "../menus/menu-workspace";
 
 interface IWorkspaceProps {
   workspace: IWorkspace;
@@ -9,6 +11,12 @@ interface IWorkspaceProps {
 }
 
 const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
+  const [anchorEl, setAnchorEL] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setAnchorEL(event.currentTarget);
+  };
+
   return (
     <Box
       className="workspace-box"
@@ -39,10 +47,17 @@ const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
             m: 0.3,
             p: 1,
           }}
+          onContextMenu={(e) => handleClick(e)}
         >
           <AssignmentIcon />
         </Avatar>
       </BootstrapTooltip>
+
+      <MenuWorkspace
+        anchorEl={anchorEl}
+        handleClose={() => setAnchorEL(null)}
+        workspace={workspace}
+      />
     </Box>
   );
 };
