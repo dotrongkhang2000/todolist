@@ -1,30 +1,12 @@
-import {
-  Avatar,
-  Box,
-  styled,
-  Tooltip,
-  tooltipClasses,
-  TooltipProps,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
 
 import { Assignment as AssignmentIcon } from "@mui/icons-material";
+import BootstrapTooltip from "../utils/BootstrapTooltip";
 
 interface IWorkspaceProps {
   workspace: IWorkspace;
   dragOverlay?: boolean;
 }
-
-const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.arrow}`]: {
-    color: theme.palette.common.black,
-  },
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.black,
-  },
-}));
 
 const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
   return (

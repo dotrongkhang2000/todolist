@@ -1,7 +1,4 @@
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { SortableContext } from "@dnd-kit/sortable";
 import SortableWorkspace from "./SortableItem";
 
 interface IDropableProps {
