@@ -13,12 +13,12 @@ import {
   SxProps,
   TextField,
   Theme,
-} from "@mui/material";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { createTask } from "../../store/taskManagerSlice";
-import { PriorityIcon, TitleIcon } from "../utils/renderIcon";
+} from '@mui/material';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { createTask } from '../../store/taskManagerSlice';
+import { PriorityIcon, TitleIcon } from '../utils/renderIcon';
 
 interface IDialogCreateTask {
   open: boolean;
@@ -44,20 +44,20 @@ const RenderIcon = ({ label, iconName }: IRenderIconProps) => {
   };
 
   switch (label) {
-    case "Priority":
+    case 'Priority':
       return PriorityIcon(
-        iconName as "No Priority" | "Low" | "Medium" | "High" | "Urgent",
+        iconName as 'No Priority' | 'Low' | 'Medium' | 'High' | 'Urgent',
         style
       );
     default:
       return TitleIcon(
         iconName as
-          | "Backlog"
-          | "Todo"
-          | "In Progress"
-          | "In Review"
-          | "Done"
-          | "Canceled"
+          | 'Backlog'
+          | 'Todo'
+          | 'In Progress'
+          | 'In Review'
+          | 'Done'
+          | 'Canceled'
       );
   }
 };
@@ -75,14 +75,14 @@ const SelectComponent = ({
       label={label}
       onChange={handleChange}
       sx={{
-        "& .MuiSelect-select": {
-          display: "flex",
-          alignItems: "center",
+        '& .MuiSelect-select': {
+          display: 'flex',
+          alignItems: 'center',
         },
       }}
     >
       {selectItemList.map((item) => (
-        <MenuItem value={item}>
+        <MenuItem value={item} key={item}>
           <RenderIcon label={label} iconName={item} />
           {item}
         </MenuItem>
@@ -102,20 +102,20 @@ const DialogCreateTask = ({
   );
 
   const [task, setTask] = useState<ITask>({
-    id: "",
-    title: "",
+    id: '',
+    title: '',
     status: groupName as TaskStatus,
-    priority: "No Priority",
+    priority: 'No Priority',
   });
   const statusList = [
-    "Backlog",
-    "Todo",
-    "In Progress",
-    "In Review",
-    "Done",
-    "Canceled",
+    'Backlog',
+    'Todo',
+    'In Progress',
+    'In Review',
+    'Done',
+    'Canceled',
   ];
-  const priorityList = ["No Priority", "Low", "Medium", "High", "Urgent"];
+  const priorityList = ['No Priority', 'Low', 'Medium', 'High', 'Urgent'];
 
   const handleChange = (taskChange: Partial<ITask>) => {
     setTask({ ...task, ...taskChange });

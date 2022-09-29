@@ -14,13 +14,13 @@ import {
   SxProps,
   TextField,
   Theme,
-} from "@mui/material";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateTask } from "../../store/taskManagerSlice";
-import { PriorityIcon, TitleIcon } from "../utils/renderIcon";
-import { DeleteForever as DeleteForeverIcon } from "@mui/icons-material";
-import DialogDeleteTask from "./dialog-delete-task";
+} from '@mui/material';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateTask } from '../../store/taskManagerSlice';
+import { PriorityIcon, TitleIcon } from '../utils/renderIcon';
+import { DeleteForever as DeleteForeverIcon } from '@mui/icons-material';
+import DialogDeleteTask from './dialog-delete-task';
 
 interface IDialogDetailTask {
   open: boolean;
@@ -46,20 +46,20 @@ const RenderIcon = ({ label, iconName }: IRenderIconProps) => {
   };
 
   switch (label) {
-    case "Priority":
+    case 'Priority':
       return PriorityIcon(
-        iconName as "No Priority" | "Low" | "Medium" | "High" | "Urgent",
+        iconName as 'No Priority' | 'Low' | 'Medium' | 'High' | 'Urgent',
         style
       );
     default:
       return TitleIcon(
         iconName as
-          | "Backlog"
-          | "Todo"
-          | "In Progress"
-          | "In Review"
-          | "Done"
-          | "Canceled"
+          | 'Backlog'
+          | 'Todo'
+          | 'In Progress'
+          | 'In Review'
+          | 'Done'
+          | 'Canceled'
       );
   }
 };
@@ -77,14 +77,14 @@ const SelectComponent = ({
       label={label}
       onChange={handleChange}
       sx={{
-        "& .MuiSelect-select": {
-          display: "flex",
-          alignItems: "center",
+        '& .MuiSelect-select': {
+          display: 'flex',
+          alignItems: 'center',
         },
       }}
     >
       {selectItemList.map((item) => (
-        <MenuItem value={item}>
+        <MenuItem value={item} key={item}>
           <RenderIcon label={label} iconName={item} />
           {item}
         </MenuItem>
@@ -105,14 +105,14 @@ const DialogDetailTask = ({
   const [openDialogDeleteTask, setOpenDialogDeleteTask] = useState(false);
 
   const statusList = [
-    "Backlog",
-    "Todo",
-    "In Progress",
-    "In Review",
-    "Done",
-    "Canceled",
+    'Backlog',
+    'Todo',
+    'In Progress',
+    'In Review',
+    'Done',
+    'Canceled',
   ];
-  const priorityList = ["No Priority", "Low", "Medium", "High", "Urgent"];
+  const priorityList = ['No Priority', 'Low', 'Medium', 'High', 'Urgent'];
 
   const handleChange = (taskChange: Partial<ITask>) => {
     setTask({ ...task, ...taskChange });
@@ -129,7 +129,7 @@ const DialogDetailTask = ({
       <DialogTitle id="alert-dialog-title">
         {task.id}
         <IconButton
-          sx={{ float: "right", p: 1, top: -5, right: -16 }}
+          sx={{ float: 'right', p: 1, top: -5, right: -16 }}
           onClick={() => setOpenDialogDeleteTask(true)}
         >
           <DeleteForeverIcon />

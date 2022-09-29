@@ -1,9 +1,9 @@
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, Typography } from '@mui/material';
 
-import { Assignment as AssignmentIcon } from "@mui/icons-material";
-import BootstrapTooltip from "../utils/BootstrapTooltip";
-import { useState } from "react";
-import MenuWorkspace from "../menus/menu-workspace";
+import { Assignment as AssignmentIcon } from '@mui/icons-material';
+import BootstrapTooltip from '../utils/BootstrapTooltip';
+import React, { useState } from 'react';
+import MenuWorkspace from '../menus/menu-workspace';
 
 interface IWorkspaceProps {
   workspace: IWorkspace;
@@ -22,18 +22,18 @@ const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
       className="workspace-box"
       sx={{
         mt: 1,
-        border: "3px solid transparent",
-        "&:hover": {
-          border: dragOverlay ? "none" : "3px solid #ccc",
+        border: '3px solid transparent',
+        '&:hover': {
+          border: dragOverlay ? 'none' : '3px solid #ccc',
           borderRadius: 2,
-          "& .box-workspace-name": {
-            visibility: "visible",
-            width: "max-content",
+          '& .box-workspace-name': {
+            visibility: 'visible',
+            width: 'max-content',
             opacity: 1,
           },
         },
-        position: "relative",
-        cursor: dragOverlay ? "grabbing" : "default",
+        position: 'relative',
+        cursor: dragOverlay ? 'grabbing' : 'default',
       }}
     >
       <BootstrapTooltip

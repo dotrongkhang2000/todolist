@@ -10,84 +10,85 @@ import {
   PlayCircleFilled as PlayCircleFilledIcon,
   PauseCircleFilled as PauseCircleFilledIcon,
   ChangeCircle as ChangeCircleIcon,
-} from "@mui/icons-material";
-import { SxProps, Theme } from "@mui/material";
+} from '@mui/icons-material';
+import { SxProps, Theme } from '@mui/material';
+import React from 'react';
 
-import { yellow } from "@mui/material/colors";
+import { yellow } from '@mui/material/colors';
 
 export const PriorityIcon = (
-  priority: "No Priority" | "Low" | "Medium" | "High" | "Urgent",
+  priority: 'No Priority' | 'Low' | 'Medium' | 'High' | 'Urgent',
   style?: SxProps<Theme>
 ) => {
   switch (priority) {
-    case "Low":
+    case 'Low':
       return (
-        <SignalCellular1BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+        <SignalCellular1BarIcon sx={{ ...{ fontSize: '1rem' }, ...style }} />
       );
-    case "Medium":
+    case 'Medium':
       return (
-        <SignalCellular2BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+        <SignalCellular2BarIcon sx={{ ...{ fontSize: '1rem' }, ...style }} />
       );
-    case "High":
+    case 'High':
       return (
-        <SignalCellular3BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+        <SignalCellular3BarIcon sx={{ ...{ fontSize: '1rem' }, ...style }} />
       );
-    case "Urgent":
+    case 'Urgent':
       return (
-        <SignalCellular4BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+        <SignalCellular4BarIcon sx={{ ...{ fontSize: '1rem' }, ...style }} />
       );
     default:
       return (
-        <SignalCellular0BarIcon sx={{ ...{ fontSize: "1rem" }, ...style }} />
+        <SignalCellular0BarIcon sx={{ ...{ fontSize: '1rem' }, ...style }} />
       );
   }
 };
 
 export const TitleIcon = (
   priority:
-    | "Backlog"
-    | "Todo"
-    | "In Progress"
-    | "In Review"
-    | "Done"
-    | "Canceled"
+    | 'Backlog'
+    | 'Todo'
+    | 'In Progress'
+    | 'In Review'
+    | 'Done'
+    | 'Canceled'
 ) => {
   switch (priority) {
-    case "Todo":
+    case 'Todo':
       return (
-        <PlayCircleFilledIcon sx={{ fontSize: "1.3rem", mr: 1, pb: "1px" }} />
+        <PlayCircleFilledIcon sx={{ fontSize: '1.3rem', mr: 1, pb: '1px' }} />
       );
-    case "In Progress":
+    case 'In Progress':
       return (
         <PauseCircleFilledIcon
-          sx={{ fontSize: "1.3rem", mr: 1, pb: "1px", color: yellow[300] }}
+          sx={{ fontSize: '1.3rem', mr: 1, pb: '1px', color: yellow[300] }}
         />
       );
-    case "In Review":
+    case 'In Review':
       return (
         <ChangeCircleIcon
-          sx={{ fontSize: "1.3rem", mr: 1, pb: "1px" }}
+          sx={{ fontSize: '1.3rem', mr: 1, pb: '1px' }}
           color="primary"
         />
       );
-    case "Done":
+    case 'Done':
       return (
         <CheckCircleIcon
-          sx={{ fontSize: "1.3rem", mr: 1, pb: "1px" }}
+          sx={{ fontSize: '1.3rem', mr: 1, pb: '1px' }}
           color="success"
         />
       );
-    case "Canceled":
+    case 'Canceled':
       return (
         <CancelIcon
-          sx={{ fontSize: "1.3rem", mr: 1, pb: "1px" }}
+          sx={{ fontSize: '1.3rem', mr: 1, pb: '1px' }}
           color="disabled"
         />
       );
     default:
       return (
         <FormatListBulletedIcon
-          sx={{ fontSize: "1.3rem", mr: 1, pb: "1px" }}
+          sx={{ fontSize: '1.3rem', mr: 1, pb: '1px' }}
           color="action"
         />
       );

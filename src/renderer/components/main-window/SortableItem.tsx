@@ -1,9 +1,9 @@
-import React from "react";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import React from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-import Item from "./Item";
-import { Box } from "@mui/material";
+import Item from './Item';
+import { Box } from '@mui/material';
 
 interface ISortableItemProps {
   idTask: string;
