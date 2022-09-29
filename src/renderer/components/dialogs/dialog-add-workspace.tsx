@@ -27,8 +27,6 @@ const DialogAddWorkspace = ({
     imgUrl: '',
   });
 
-  console.log(totalWorkspace);
-
   const handleChange = (workspaceChange: Partial<IWorkspace>) => {
     setWorkspace({ ...workspace, ...workspaceChange });
   };

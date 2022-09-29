@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,6 +9,7 @@ import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import { useDispatch } from 'react-redux';
 import { deleteTask } from '../../store/taskManagerSlice';
+import { deleteWorkspace } from '../../store/workspaceManagerSlice';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -37,10 +38,10 @@ const DialogDelete = ({
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    if (dialogName === 'tasl') {
+    if (dialogName === 'tasl')
       dispatch(deleteTask({ status: task!.status, taskId: task!.id }));
-    } else {
-      console.log('handle delete workspace');
+    else {
+      dispatch(deleteWorkspace(workspace!));
     }
 
     handleClose();

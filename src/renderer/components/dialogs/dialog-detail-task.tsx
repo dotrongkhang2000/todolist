@@ -20,7 +20,7 @@ import { useDispatch } from 'react-redux';
 import { updateTask } from '../../store/taskManagerSlice';
 import { PriorityIcon, TitleIcon } from '../utils/renderIcon';
 import { DeleteForever as DeleteForeverIcon } from '@mui/icons-material';
-import DialogDeleteTask from './dialog-delete-task';
+import DialogDelete from './dialog-delete';
 
 interface IDialogDetailTask {
   open: boolean;
@@ -184,12 +184,13 @@ const DialogDetailTask = ({
         </Button>
       </DialogActions>
 
-      <DialogDeleteTask
+      <DialogDelete
         open={openDialogDeleteTask}
         handleClose={() => {
           setOpenDialogDeleteTask(false);
         }}
         task={taskRender}
+        dialogName="task"
       />
     </Dialog>
   );
