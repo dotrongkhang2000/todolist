@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 // import DialogDelete from "../dialogs/dialog-delete-task";
-import { useState } from "react";
+// import { useState } from "react";
 
 interface IMenuWorkspaceProps {
   anchorEl: HTMLElement | null;
@@ -26,8 +26,8 @@ const MenuWorkspace = ({
   handleClose,
   workspace,
 }: IMenuWorkspaceProps) => {
-  const [openDialogDeleteWorkspace, setOpenDialogDeleteWorkspace] =
-    useState(false);
+  // const [openDialogDeleteWorkspace, setOpenDialogDeleteWorkspace] =
+  //   useState(false);
 
   const listMenuItem: IMenuItem[] = [
     {
@@ -36,9 +36,9 @@ const MenuWorkspace = ({
     },
   ];
 
-  const handleDeleteWorkspace = () => {
-    setOpenDialogDeleteWorkspace(true);
-  };
+  // const handleDeleteWorkspace = () => {
+  //   setOpenDialogDeleteWorkspace(true);
+  // };
 
   return (
     <Menu
@@ -57,7 +57,9 @@ const MenuWorkspace = ({
         </MenuItem>
       ))}
       <Divider />
-      <MenuItem onClick={() => handleDeleteWorkspace()}>
+      <MenuItem
+      // onClick={() => handleDeleteWorkspace()}
+      >
         <ListItemIcon>
           <Delete fontSize="small" />
         </ListItemIcon>
