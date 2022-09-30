@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import Item from './Item';
 import { Box } from '@mui/material';
+import DialogDetailTask from '../dialogs/dialog-detail-task';
 
 interface ISortableItemProps {
   idTask: string;
@@ -23,19 +24,34 @@ const SortableItem = ({ idTask, taskTitle, listTask }: ISortableItemProps) => {
 
   const taskRender = listTask.find((task) => task.id === idTask);
 
+  const [openDialogDetailTask, setOpenDialogDetailTask] = useState(false);
+
+  const handleClickEvent = () => {
+    setOpenDialogDetailTask(true);
+  };
+
   return (
-    <Box
-      sx={{
-        transform: CSS.Transform.toString(transform),
-        transition,
-        opacity: isDragging ? 0.5 : 1,
-      }}
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-    >
-      <Item task={taskRender!} />
-    </Box>
+    <>
+      <Box
+        sx={{
+          transform: CSS.Transform.toString(transform),
+          transition,
+          opacity: isDragging ? 0.5 : 1,
+        }}
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
+        onClick={() => handleClickEvent()}
+      >
+        <Item task={taskRender!} />
+      </Box>
+
+      <DialogDetailTask
+        open={openDialogDetailTask}
+        handleClose={() => setOpenDialogDetailTask(false)}
+        taskRender={taskRender!}
+      />
+    </>
   );
 };
 
