@@ -9,6 +9,7 @@ import {
 import { Delete, Edit } from '@mui/icons-material';
 import React, { useState } from 'react';
 import DialogDelete from '../dialogs/dialog-delete';
+import DialogEditWorkspace from '../dialogs/dialog-edit-workspace';
 
 interface IMenuWorkspaceProps {
   anchorEl: HTMLElement | null;
@@ -21,13 +22,14 @@ interface IMenuItem {
   name: string;
 }
 
-const MenuWorkspace = ({
+const ContextMenuWorkspace = ({
   anchorEl,
   handleClose,
   workspace,
 }: IMenuWorkspaceProps) => {
   const [openDialogDeleteWorkspace, setOpenDialogDeleteWorkspace] =
     useState(false);
+  const [openDialogEditWorkspace, setOpenDialogEditWorkspace] = useState(false);
 
   const listMenuItem: IMenuItem[] = [
     {
@@ -42,6 +44,17 @@ const MenuWorkspace = ({
     setOpenDialogDeleteWorkspace(true);
   };
 
+  const handleClick = (action: string) => {
+    switch (action) {
+      case 'Edit':
+        handleClose();
+
+        setOpenDialogEditWorkspace(true);
+        break;
+      default:
+    }
+  };
+
   return (
     <>
       <Menu
@@ -52,7 +65,10 @@ const MenuWorkspace = ({
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
       >
         {listMenuItem.map((menuItem) => (
-          <MenuItem key={menuItem.name}>
+          <MenuItem
+            key={menuItem.name}
+            onClick={() => handleClick(menuItem.name)}
+          >
             <ListItemIcon>{menuItem.icon}</ListItemIcon>
             <ListItemText>
               <Typography variant="body2">{menuItem.name}</Typography>
@@ -76,8 +92,14 @@ const MenuWorkspace = ({
         dialogName="workspace"
         workspace={workspace}
       />
+
+      <DialogEditWorkspace
+        open={openDialogEditWorkspace}
+        handleClose={() => setOpenDialogEditWorkspace(false)}
+        workspaceRender={workspace}
+      />
     </>
   );
 };
 
-export default MenuWorkspace;
+export default ContextMenuWorkspace;

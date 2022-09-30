@@ -8,6 +8,9 @@ const initWorkspaceManager: IWorkspaceManagerState = {
   listWorkspace: [],
 };
 
+const findIndexWorkspace = (listWorkspace: IWorkspace[], workspaceId: string) =>
+  listWorkspace.findIndex((workspace) => workspace.id === workspaceId);
+
 const workspaceManagerSlice = createSlice({
   name: 'workspaceManager',
   initialState: initWorkspaceManager,
@@ -22,8 +25,9 @@ const workspaceManagerSlice = createSlice({
     },
     deleteWorkspace: (state, action: PayloadAction<IWorkspace>) => {
       const workspaceDel = action.payload;
-      const indexWorkspaceDel = state.listWorkspace.findIndex(
-        (workspace) => workspace.id === workspaceDel.id
+      const indexWorkspaceDel = findIndexWorkspace(
+        state.listWorkspace,
+        workspaceDel.id
       );
 
       state.listWorkspace = state.listWorkspace.filter(
@@ -31,10 +35,23 @@ const workspaceManagerSlice = createSlice({
           state.listWorkspace[_index] !== state.listWorkspace[indexWorkspaceDel]
       );
     },
+    updateWorkspace: (state, action: PayloadAction<IWorkspace>) => {
+      const workspaceUpdate = action.payload;
+      const indexWorkspaceUpdate = findIndexWorkspace(
+        state.listWorkspace,
+        workspaceUpdate.id
+      );
+
+      state.listWorkspace[indexWorkspaceUpdate] = workspaceUpdate;
+    },
   },
 });
 
-export const { addWorkspace, setListWorkspace, deleteWorkspace } =
-  workspaceManagerSlice.actions;
+export const {
+  addWorkspace,
+  setListWorkspace,
+  deleteWorkspace,
+  updateWorkspace,
+} = workspaceManagerSlice.actions;
 
 export default workspaceManagerSlice.reducer;
