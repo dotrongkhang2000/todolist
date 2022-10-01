@@ -17,7 +17,8 @@ import {
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { createTask } from '../../store/taskManagerSlice';
+import { createTask } from '../../store/workspaceManagerSlice';
+import getWorkspaceWithId from '../utils/getWorkspaceWithId';
 import { PriorityIcon, TitleIcon } from '../utils/renderIcon';
 
 interface IDialogCreateTask {
@@ -97,9 +98,33 @@ const DialogCreateTask = ({
   groupName,
 }: IDialogCreateTask) => {
   const dispatch = useDispatch();
-  const totalTask = useSelector(
-    (state: RootState) => state.taskManager.totalTask
+
+  const workspaceActiveId = useSelector(
+    (state: RootState) => state.workspaceManager.workspaceActiveId
   );
+  const listWorkspace = useSelector(
+    (state: RootState) => state.workspaceManager.listWorkspace
+  );
+
+  const getTotalTask = () => {
+    if (!workspaceActiveId) return;
+
+    const workspace = listWorkspace.find(
+      (workspace) => workspace.id === workspaceActiveId
+    );
+
+    return workspace!.taskManager.totalTask;
+  };
+
+  const getNameWorkspace = () => {
+    if (!workspaceActiveId) return;
+
+    const workspace = getWorkspaceWithId(listWorkspace, workspaceActiveId);
+
+    return workspace!.name;
+  };
+
+  const totalTask = getTotalTask();
 
   const [task, setTask] = useState<ITask>({
     id: '',
@@ -122,8 +147,12 @@ const DialogCreateTask = ({
   };
 
   const handleSubmit = () => {
+    const workspaceName = getNameWorkspace();
+
+    const taskName = workspaceName!.slice(0, 3).toUpperCase();
+
     const newTask: ITask = {
-      id: `TOD-${totalTask + 1}`,
+      id: `${taskName}-${totalTask! + 1}`,
       title: task.title,
       description: task.description,
       status: task.status,

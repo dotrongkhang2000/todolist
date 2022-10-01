@@ -25,6 +25,17 @@ const DialogAddWorkspace = ({
     id: '',
     name: '',
     imgUrl: '',
+    taskManager: {
+      totalTask: 0,
+      taskGroups: {
+        Backlog: [],
+        Todo: [],
+        'In Progress': [],
+        'In Review': [],
+        Done: [],
+        Canceled: [],
+      },
+    },
   });
 
   const handleChange = (workspaceChange: Partial<IWorkspace>) => {

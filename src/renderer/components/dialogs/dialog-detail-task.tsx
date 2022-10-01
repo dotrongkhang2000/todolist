@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateTask } from '../../store/taskManagerSlice';
+import { updateTask } from '../../store/workspaceManagerSlice';
 import { PriorityIcon, TitleIcon } from '../utils/renderIcon';
 import { DeleteForever as DeleteForeverIcon } from '@mui/icons-material';
 import DialogDelete from './dialog-delete';

@@ -1,11 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  removeAtIndex,
+  updateArrAtIndex,
+} from '../components/utils/handleArray';
 
 interface IWorkspaceManagerState {
   listWorkspace: IWorkspace[];
+  workspaceActiveId: string;
 }
 
 const initWorkspaceManager: IWorkspaceManagerState = {
   listWorkspace: [],
+  workspaceActiveId: '',
 };
 
 const findIndexWorkspace = (listWorkspace: IWorkspace[], workspaceId: string) =>
@@ -19,6 +25,10 @@ const workspaceManagerSlice = createSlice({
       const workspace = action.payload;
 
       state.listWorkspace = [...state.listWorkspace, workspace];
+
+      if (state.listWorkspace.length === 1) {
+        state.workspaceActiveId = state.listWorkspace[0].id;
+      }
     },
     setListWorkspace: (state, action: PayloadAction<IWorkspace[]>) => {
       Object.assign(state.listWorkspace, action.payload);
@@ -34,6 +44,8 @@ const workspaceManagerSlice = createSlice({
         (_, _index) =>
           state.listWorkspace[_index] !== state.listWorkspace[indexWorkspaceDel]
       );
+
+      if (state.listWorkspace.length === 0) state.workspaceActiveId = '';
     },
     updateWorkspace: (state, action: PayloadAction<IWorkspace>) => {
       const workspaceUpdate = action.payload;
@@ -44,6 +56,74 @@ const workspaceManagerSlice = createSlice({
 
       state.listWorkspace[indexWorkspaceUpdate] = workspaceUpdate;
     },
+    setWorkspaceActiveId: (state, action: PayloadAction<string>) => {
+      const workspaceId = action.payload;
+
+      state.workspaceActiveId = workspaceId;
+    },
+    createTask: (state, action: PayloadAction<ITask>) => {
+      const indexWorkspaceActive = findIndexWorkspace(
+        state.listWorkspace,
+        state.workspaceActiveId
+      );
+      const taskManager = state.listWorkspace[indexWorkspaceActive].taskManager;
+
+      taskManager.taskGroups[action.payload.status].push(action.payload);
+      ++taskManager.totalTask;
+    },
+    setTaskGroup: (
+      state,
+      action: PayloadAction<Record<TaskGroupTitle, ITask[]>>
+    ) => {
+      const indexWorkspaceActive = findIndexWorkspace(
+        state.listWorkspace,
+        state.workspaceActiveId
+      );
+      const taskManager = state.listWorkspace[indexWorkspaceActive].taskManager;
+
+      Object.assign(taskManager.taskGroups, action.payload);
+    },
+    deleteTask: (
+      state,
+      action: PayloadAction<{ status: TaskGroupTitle; taskId: string }>
+    ) => {
+      const indexWorkspaceActive = findIndexWorkspace(
+        state.listWorkspace,
+        state.workspaceActiveId
+      );
+      const taskManager = state.listWorkspace[indexWorkspaceActive].taskManager;
+
+      const { status, taskId } = action.payload;
+
+      const indexTask = taskManager.taskGroups[status].findIndex(
+        (t) => t.id === taskId
+      );
+
+      taskManager.taskGroups = {
+        ...taskManager.taskGroups,
+        [status]: removeAtIndex(taskManager.taskGroups[status], indexTask),
+      };
+
+      --taskManager.totalTask;
+    },
+    updateTask: (state, action: PayloadAction<ITask>) => {
+      const indexWorkspaceActive = findIndexWorkspace(
+        state.listWorkspace,
+        state.workspaceActiveId
+      );
+      const taskManager = state.listWorkspace[indexWorkspaceActive].taskManager;
+
+      const taskGroupTitle = action.payload.status;
+      const task = action.payload;
+
+      taskManager.taskGroups = {
+        ...taskManager.taskGroups,
+        [taskGroupTitle]: updateArrAtIndex(
+          taskManager.taskGroups[taskGroupTitle],
+          task
+        ),
+      };
+    },
   },
 });
 
@@ -52,6 +132,11 @@ export const {
   setListWorkspace,
   deleteWorkspace,
   updateWorkspace,
+  setWorkspaceActiveId,
+  deleteTask,
+  createTask,
+  setTaskGroup,
+  updateTask,
 } = workspaceManagerSlice.actions;
 
 export default workspaceManagerSlice.reducer;

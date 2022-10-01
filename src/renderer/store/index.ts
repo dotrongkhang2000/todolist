@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import taskManagerReducer from './taskManagerSlice';
 import workspaceManagerReducer from './workspaceManagerSlice';
 
 export const store = configureStore({
   reducer: {
-    taskManager: taskManagerReducer,
     workspaceManager: workspaceManagerReducer,
   },
 });
