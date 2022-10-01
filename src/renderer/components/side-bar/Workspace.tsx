@@ -3,6 +3,9 @@ import { Avatar, Box, Typography } from '@mui/material';
 import { Assignment as AssignmentIcon } from '@mui/icons-material';
 import BootstrapTooltip from '../utils/BootstrapTooltip';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { blue } from '@mui/material/colors';
 
 interface IWorkspaceProps {
   workspace: IWorkspace;
@@ -10,16 +13,26 @@ interface IWorkspaceProps {
 }
 
 const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
+  const workspaceActivId = useSelector(
+    (state: RootState) => state.workspaceManager.workspaceActiveId
+  );
+
   return (
     <>
       <Box
         className="workspace-box"
         sx={{
           mt: 1,
-          border: '3px solid transparent',
+          borderRadius: 2,
+          border:
+            workspaceActivId === workspace.id
+              ? `3px solid ${blue[500]}`
+              : '3px solid transparent',
           '&:hover': {
-            border: dragOverlay ? 'none' : '3px solid #ccc',
-            borderRadius: 2,
+            border:
+              dragOverlay ?? workspaceActivId === workspace.id
+                ? `3px solid ${blue[500]}`
+                : '3px solid #ccc',
             '& .box-workspace-name': {
               visibility: 'visible',
               width: 'max-content',

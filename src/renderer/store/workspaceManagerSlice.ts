@@ -46,6 +46,12 @@ const workspaceManagerSlice = createSlice({
       );
 
       if (state.listWorkspace.length === 0) state.workspaceActiveId = '';
+      else {
+        const indexWorkspaceNearest =
+          indexWorkspaceDel === 0 ? 0 : indexWorkspaceDel - 1;
+
+        state.workspaceActiveId = state.listWorkspace[indexWorkspaceNearest].id;
+      }
     },
     updateWorkspace: (state, action: PayloadAction<IWorkspace>) => {
       const workspaceUpdate = action.payload;
