@@ -19,13 +19,27 @@ import { removeAtIndex, insertAtIndex, arrayMove } from '../utils/handleArray';
 import Item from './Item';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { setTaskGroup } from '../../store/taskManagerSlice';
+import { setTaskGroup } from '../../store/workspaceManagerSlice';
 import Sidebar from '../side-bar';
+import getWorkspaceWithId from '../utils/getWorkspaceWithId';
 
 const MainWindow = () => {
-  const taskGroups = useSelector(
-    (state: RootState) => state.taskManager.taskGroups
+  const workspaceActiveId = useSelector(
+    (state: RootState) => state.workspaceManager.workspaceActiveId
   );
+  const listWorkspace = useSelector(
+    (state: RootState) => state.workspaceManager.listWorkspace
+  );
+
+  const getTaskGroup = () => {
+    if (!workspaceActiveId) return;
+
+    const workspace = getWorkspaceWithId(listWorkspace, workspaceActiveId);
+
+    return workspace!.taskManager.taskGroups;
+  };
+
+  const taskGroups = getTaskGroup();
 
   const dispatch = useDispatch();
 
@@ -47,15 +61,20 @@ const MainWindow = () => {
   const handleDragStart = ({ active }: DragStartEvent) => {
     setActiveId(active?.id);
 
-    const activeIndex = active.data.current?.sortable.index;
-    const activeContainer: TaskGroupTitle =
-      active.data.current?.sortable.containerId;
-    const task = taskGroups[activeContainer][activeIndex];
-    setActiveTask(task);
+    if (taskGroups) {
+      const activeIndex = active.data.current?.sortable.index;
+      const activeContainer: TaskGroupTitle =
+        active.data.current?.sortable.containerId;
+      const task = taskGroups[activeContainer][activeIndex];
+
+      setActiveTask(task);
+    }
   };
 
   const handleDragCancel = () => setActiveId(null);
   const handleDragOver = ({ active, over }: DragOverEvent) => {
+    if (!taskGroups) return;
+
     const overId = over?.id;
 
     if (overId === undefined) {
@@ -66,6 +85,7 @@ const MainWindow = () => {
     const overContainer = over!.data.current?.sortable.containerId ?? over!.id;
 
     const activeIndex = active.data.current?.sortable.index;
+
     const overIndex =
       over!.id in taskGroups
         ? taskGroups[overContainer as keyof typeof taskGroups].length + 1
@@ -73,6 +93,7 @@ const MainWindow = () => {
     const task = {
       ...taskGroups[activeContainer as TaskGroupTitle][activeIndex],
     };
+
     setActiveTask(task);
 
     // change task status for new group
@@ -99,6 +120,8 @@ const MainWindow = () => {
     }
 
     if (active.id !== over.id) {
+      if (!taskGroups) return;
+
       const activeContainer = active.data.current?.sortable.containerId;
       const overContainer = over.data.current?.sortable.containerId ?? over.id;
       const activeIndex = active.data.current?.sortable.index;
@@ -178,20 +201,27 @@ const MainWindow = () => {
               'linear-gradient(to bottom right, #321D81 , #DD499D)',
             height: '100vh',
             overflowX: 'scroll',
+            width: 1,
           }}
         >
-          {Object.entries(taskGroups).map(([key, element]) => (
-            <Box key={key}>
-              <Droppable
-                groupName={key}
-                listTask={element}
-                activeId={activeId}
-              />
-            </Box>
-          ))}
-          <DragOverlay>
-            {activeId !== null ? <Item task={activeTask} dragOverlay /> : null}
-          </DragOverlay>
+          {taskGroups ? (
+            <>
+              {Object.entries(taskGroups).map(([key, element]) => (
+                <Box key={key}>
+                  <Droppable
+                    groupName={key}
+                    listTask={element}
+                    activeId={activeId}
+                  />
+                </Box>
+              ))}
+              <DragOverlay>
+                {activeId !== null ? (
+                  <Item task={activeTask} dragOverlay />
+                ) : null}
+              </DragOverlay>
+            </>
+          ) : null}
         </Box>
       </DndContext>
     </Box>

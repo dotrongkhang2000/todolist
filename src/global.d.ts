@@ -31,10 +31,14 @@ declare global {
     assignee?: IUserInfo;
   }
 
+  interface ITaskGroupState {
+    totalTask: number;
+    taskGroups: Record<TaskGroupTitle, ITask[]>;
+  }
   interface IWorkspace {
     id: string;
     name: string;
-    taskGroups?: Record<TaskGroupTitle, ITask[]>;
+    taskManager: ITaskGroupState;
     imgUrl: string;
   }
 }
