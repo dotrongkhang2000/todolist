@@ -1,6 +1,5 @@
 import { Avatar, Box, Typography } from '@mui/material';
 
-import { Assignment as AssignmentIcon } from '@mui/icons-material';
 import BootstrapTooltip from '../utils/BootstrapTooltip';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -52,10 +51,10 @@ const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
             variant="rounded"
             sx={{
               m: 0.3,
-              p: 1,
             }}
+            src={workspace.imgUrl}
           >
-            <AssignmentIcon />
+            {workspace.name[0].toUpperCase()}
           </Avatar>
         </BootstrapTooltip>
       </Box>
