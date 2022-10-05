@@ -7,6 +7,7 @@ import {
   TextField,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { setListWorkspace } from '../../firebase/services';
 
 interface IDialogAddWorkspace {
   open: boolean;
@@ -47,6 +48,17 @@ const DialogAddWorkspace = ({
       ...workspace,
       id: `Workspace-${totalWorkspace}`,
     });
+
+    setListWorkspace({
+      ...workspace,
+      id: `Workspace-${totalWorkspace}`,
+    })
+      .then(() => {
+        // eslint-disable-next-line no-console
+        console.log('alert add suscessfully');
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
 
     handleClose();
   };

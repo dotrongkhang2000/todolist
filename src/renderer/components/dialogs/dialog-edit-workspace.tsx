@@ -9,6 +9,7 @@ import {
 
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { setListWorkspace } from '../../firebase/services';
 import { updateWorkspace } from '../../store/workspaceManagerSlice';
 
 interface IDialogEditWorkspaceProps {
@@ -32,6 +33,12 @@ const DialogEditWorkspace = ({
 
   const handleSaveBtn = () => {
     dispatch(updateWorkspace(workspace));
+
+    setListWorkspace(workspace)
+      // eslint-disable-next-line no-console
+      .then(() => console.log('alert edit success'))
+      // eslint-disable-next-line no-console
+      .catch((err: Error) => console.log(err));
 
     handleClose();
   };
