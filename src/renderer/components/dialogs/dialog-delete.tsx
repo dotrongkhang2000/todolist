@@ -8,7 +8,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import { useDispatch } from 'react-redux';
-import { deleteWorkspace, deleteTask } from '../../store/workspaceManagerSlice';
+import { deleteTask } from '../../store/workspaceManagerSlice';
+import { deleteWorkspaceInData } from '../../firebase/services';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -42,7 +43,17 @@ const DialogDelete = ({
         dispatch(deleteTask({ status: task!.status, taskId: task!.id }));
         break;
       case 'workspace':
-        dispatch(deleteWorkspace(workspace!));
+        // dispatch(deleteWorkspace(workspace!));
+
+        deleteWorkspaceInData(workspace!)
+          .then(() => {
+            // eslint-disable-next-line no-console
+            console.log('alert delete success');
+          })
+          .catch((err) =>
+            // eslint-disable-next-line no-console
+            console.log(err)
+          );
         break;
       default:
     }

@@ -12,7 +12,7 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import React, { useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 
 import { arrayMove as DndKitSortArray } from '@dnd-kit/sortable';
 import Droppable from './Droppable';
@@ -20,17 +20,21 @@ import Workspace from './Workspace';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import DialogAddWorkspace from '../dialogs/dialog-add-workspace';
 import BootstrapTooltip from '../utils/BootstrapTooltip';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { useDispatch } from 'react-redux';
 import {
   addWorkspace,
-  setListWorkspace,
+  // setListWorkspace,
 } from '../../store/workspaceManagerSlice';
+import useFirestore from '../../hooks/useFirestore';
 
 const Sidebar = () => {
-  const listWorkspace: IWorkspace[] = useSelector(
-    (state: RootState) => state.workspaceManager.listWorkspace
-  );
+  const listFS = useFirestore({ collection: 'list-workspace' });
+
+  const [listWorkspace, setListWorkspace] = useState<IWorkspace[]>([]);
+
+  useEffect(() => {
+    setListWorkspace(listFS as SetStateAction<IWorkspace[]>);
+  }, [listFS]);
 
   const dispatch = useDispatch();
 
@@ -82,7 +86,7 @@ const Sidebar = () => {
       overIndex
     );
 
-    dispatch(setListWorkspace(newListWorkspace));
+    setListWorkspace(newListWorkspace);
   };
 
   const handleAddWorkspace = (workspace: IWorkspace) => {
