@@ -29,6 +29,7 @@ declare global {
     status: TaskStatus;
     priority: TaskPriority;
     assignee?: IUserInfo;
+    workspaceId: string;
   }
 
   interface ITaskGroupState {
@@ -40,6 +41,11 @@ declare global {
     name: string;
     taskManager: ITaskGroupState;
     imgUrl: string;
+  }
+  interface ICondition {
+    fieldName: string;
+    operator: WhereFilterOp;
+    compareValue: string;
   }
 }
 

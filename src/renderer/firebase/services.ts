@@ -1,4 +1,4 @@
-import { doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { doc, setDoc, deleteDoc, collection } from 'firebase/firestore';
 import { db } from './config';
 
 /**
@@ -13,6 +13,18 @@ export const setListWorkspace = async (workpsace: IWorkspace) => {
   });
 };
 
-export const deleteWorkspaceInData = async (workpsace: IWorkspace) => {
-  await deleteDoc(doc(db, 'list-workspace', workpsace.id));
+export const setTask = async (task: ITask) => {
+  /** if taskId is null then create ref with collection to auto generate document id */
+  const newTaskRef = task.id
+    ? doc(db, 'task', task.id)
+    : doc(collection(db, 'task'));
+  await setDoc(newTaskRef, task);
+};
+
+export const deleteWorkspace = async (workpsaceId: string) => {
+  await deleteDoc(doc(db, 'list-workspace', workpsaceId));
+};
+
+export const deleteTask = async (taskId: string) => {
+  await deleteDoc(doc(db, 'task', taskId));
 };

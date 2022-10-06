@@ -12,14 +12,12 @@ import { setListWorkspace } from '../../firebase/services';
 interface IDialogAddWorkspace {
   open: boolean;
   handleClose: () => void;
-  handleAddWorkspace: (workspace: IWorkspace) => void;
   totalWorkspace: number;
 }
 
 const DialogAddWorkspace = ({
   open,
   handleClose,
-  handleAddWorkspace,
   totalWorkspace,
 }: IDialogAddWorkspace) => {
   const [workspace, setWorkspace] = useState<IWorkspace>({
@@ -44,11 +42,6 @@ const DialogAddWorkspace = ({
   };
 
   const handleSubmit = () => {
-    handleAddWorkspace({
-      ...workspace,
-      id: `Workspace-${totalWorkspace}`,
-    });
-
     setListWorkspace({
       ...workspace,
       id: `Workspace-${totalWorkspace}`,

@@ -22,19 +22,17 @@ import DialogAddWorkspace from '../dialogs/dialog-add-workspace';
 import BootstrapTooltip from '../utils/BootstrapTooltip';
 import { useDispatch } from 'react-redux';
 import {
-  addWorkspace,
-  // setListWorkspace,
+  setWorkspaceActiveId as setWorkspaceActiveIdInReduxStore,
+  setWorkspaceActiveName,
 } from '../../store/workspaceManagerSlice';
 import useFirestore from '../../hooks/useFirestore';
 
 const Sidebar = () => {
-  const listFS = useFirestore({ collection: 'list-workspace' });
+  const initListWorkspace: IWorkspace[] = useFirestore({
+    collection: 'list-workspace',
+  });
 
   const [listWorkspace, setListWorkspace] = useState<IWorkspace[]>([]);
-
-  useEffect(() => {
-    setListWorkspace(listFS as SetStateAction<IWorkspace[]>);
-  }, [listFS]);
 
   const dispatch = useDispatch();
 
@@ -89,9 +87,17 @@ const Sidebar = () => {
     setListWorkspace(newListWorkspace);
   };
 
-  const handleAddWorkspace = (workspace: IWorkspace) => {
-    dispatch(addWorkspace(workspace));
-  };
+  useEffect(() => {
+    setListWorkspace(initListWorkspace as SetStateAction<IWorkspace[]>);
+
+    if (!activeWorkspaceId && initListWorkspace.length !== 0) {
+      const initWorkspaceActiveId = initListWorkspace[0].id;
+      const initWorkspaceActiveName = initListWorkspace[0].name;
+
+      dispatch(setWorkspaceActiveIdInReduxStore(initWorkspaceActiveId));
+      dispatch(setWorkspaceActiveName(initWorkspaceActiveName));
+    }
+  }, [initListWorkspace]);
 
   return (
     <Box
@@ -158,9 +164,6 @@ const Sidebar = () => {
       <DialogAddWorkspace
         open={openDialogAddWorkspace}
         handleClose={() => setOpenDialogAddWorkspace(false)}
-        handleAddWorkspace={(workspace: IWorkspace) =>
-          handleAddWorkspace(workspace)
-        }
         totalWorkspace={listWorkspace.length}
       />
     </Box>

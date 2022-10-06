@@ -8,9 +8,7 @@ import {
 } from '@mui/material';
 
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { setListWorkspace } from '../../firebase/services';
-import { updateWorkspace } from '../../store/workspaceManagerSlice';
 
 interface IDialogEditWorkspaceProps {
   open: boolean;
@@ -23,8 +21,6 @@ const DialogEditWorkspace = ({
   handleClose,
   workspaceRender,
 }: IDialogEditWorkspaceProps) => {
-  const dispatch = useDispatch();
-
   const [workspace, setWorkspace] = useState(workspaceRender);
 
   const handleChange = (change: Partial<IWorkspace>) => {
@@ -32,8 +28,6 @@ const DialogEditWorkspace = ({
   };
 
   const handleSaveBtn = () => {
-    dispatch(updateWorkspace(workspace));
-
     setListWorkspace(workspace)
       // eslint-disable-next-line no-console
       .then(() => console.log('alert edit success'))

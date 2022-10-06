@@ -6,16 +6,11 @@ import {
   Query,
   query,
   where,
-  WhereFilterOp,
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
 interface IUseFirestoreProps {
   collection: string;
-  condition?: {
-    fieldName: string;
-    operator: WhereFilterOp;
-    compareValue: string;
-  };
+  condition?: ICondition;
 }
 
 const useFirestore = ({ collection, condition }: IUseFirestoreProps) => {
@@ -39,7 +34,7 @@ const useFirestore = ({ collection, condition }: IUseFirestoreProps) => {
     const unsubcribe = onSnapshot(q, (snapshot) => {
       const list = snapshot.docs.map((doc) => ({
         ...doc.data(),
-        id: doc.id,
+        id: doc.data().id || doc.id,
       }));
 
       setDocument(list);
@@ -48,7 +43,7 @@ const useFirestore = ({ collection, condition }: IUseFirestoreProps) => {
     return () => {
       unsubcribe();
     };
-  }, [collection, collection]);
+  }, [collection, condition]);
 
   return document;
 };
