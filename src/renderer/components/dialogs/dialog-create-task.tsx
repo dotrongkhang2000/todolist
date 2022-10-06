@@ -15,16 +15,16 @@ import {
   Theme,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { createTask } from '../../store/workspaceManagerSlice';
-import getWorkspaceWithId from '../utils/getWorkspaceWithId';
 import { PriorityIcon, TitleIcon } from '../utils/renderIcon';
+import { setTask as setTaskFB } from '../../firebase/services';
 
 interface IDialogCreateTask {
   open: boolean;
   handleClose: () => void;
   groupName: string;
+  totalTask: number;
 }
 
 interface ISelectComponentProps {
@@ -96,41 +96,21 @@ const DialogCreateTask = ({
   open,
   handleClose,
   groupName,
+  totalTask,
 }: IDialogCreateTask) => {
-  const dispatch = useDispatch();
-
   const workspaceActiveId = useSelector(
     (state: RootState) => state.workspaceManager.workspaceActiveId
   );
-  const listWorkspace = useSelector(
-    (state: RootState) => state.workspaceManager.listWorkspace
+  const workspaceActiveName = useSelector(
+    (state: RootState) => state.workspaceManager.workspaceActiveName
   );
-
-  const getTotalTask = () => {
-    if (!workspaceActiveId) return;
-
-    const workspace = listWorkspace.find(
-      (workspace) => workspace.id === workspaceActiveId
-    );
-
-    return workspace!.taskManager.totalTask;
-  };
-
-  const getNameWorkspace = () => {
-    if (!workspaceActiveId) return;
-
-    const workspace = getWorkspaceWithId(listWorkspace, workspaceActiveId);
-
-    return workspace!.name;
-  };
-
-  const totalTask = getTotalTask();
 
   const [task, setTask] = useState<ITask>({
     id: '',
     title: '',
     status: groupName as TaskStatus,
     priority: 'No Priority',
+    workspaceId: workspaceActiveId,
   });
   const statusList = [
     'Backlog',
@@ -147,19 +127,14 @@ const DialogCreateTask = ({
   };
 
   const handleSubmit = () => {
-    const workspaceName = getNameWorkspace();
+    const taskId =
+      workspaceActiveName.slice(0, 3).toLocaleUpperCase() + `-${totalTask + 1}`;
 
-    const taskName = workspaceName!.slice(0, 3).toUpperCase();
-
-    const newTask: ITask = {
-      id: `${taskName}-${totalTask! + 1}`,
-      title: task.title,
-      description: task.description,
-      status: task.status,
-      priority: task.priority,
-    };
-
-    dispatch(createTask(newTask));
+    setTaskFB({ ...task, workspaceId: workspaceActiveId, id: taskId })
+      // eslint-disable-next-line no-console
+      .then(() => console.log('create successful'))
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
     handleClose();
   };
 

@@ -13,35 +13,40 @@ import {
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { Box } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Droppable from './Dropable';
 import { removeAtIndex, insertAtIndex, arrayMove } from '../utils/handleArray';
 import Item from './Item';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { setTaskGroup } from '../../store/workspaceManagerSlice';
 import Sidebar from '../side-bar';
-import getWorkspaceWithId from '../utils/getWorkspaceWithId';
+import useFirestore from '../../hooks/useFirestore';
+import filterTaskToTaskGroup from '../utils/filterTaskToTaskGroups';
+import { setTask } from '../../firebase/services';
 
 const MainWindow = () => {
   const workspaceActiveId = useSelector(
     (state: RootState) => state.workspaceManager.workspaceActiveId
   );
-  const listWorkspace = useSelector(
-    (state: RootState) => state.workspaceManager.listWorkspace
+
+  const [totalTask, setTotalTask] = useState(0);
+
+  const listTaskCondition: ICondition = useMemo(
+    () => ({
+      fieldName: 'workspaceId',
+      operator: '==',
+      compareValue: workspaceActiveId,
+    }),
+    [workspaceActiveId]
   );
 
-  const getTaskGroup = () => {
-    if (!workspaceActiveId) return;
+  const initListTask = useFirestore({
+    collection: 'task',
+    condition: listTaskCondition,
+  });
 
-    const workspace = getWorkspaceWithId(listWorkspace, workspaceActiveId);
-
-    return workspace!.taskManager.taskGroups;
-  };
-
-  const taskGroups = getTaskGroup();
-
-  const dispatch = useDispatch();
+  const [taskGroups, setTaskGroups] =
+    useState<Record<TaskGroupTitle, ITask[]>>();
 
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [activeTask, setActiveTask] = useState<ITask | null>(null);
@@ -109,7 +114,13 @@ const MainWindow = () => {
     );
 
     if (activeContainer !== overContainer) {
-      dispatch(setTaskGroup(newTaskGroup));
+      setTaskGroups(newTaskGroup);
+
+      setTask(task)
+        // eslint-disable-next-line no-console
+        .then(() => console.log('sucess'))
+        // eslint-disable-next-line no-console
+        .catch((err) => console.log(err));
     }
   };
 
@@ -132,6 +143,10 @@ const MainWindow = () => {
 
       let newItems: Record<TaskGroupTitle, ITask[]>;
 
+      const taskActive = taskGroups[activeContainer as TaskGroupTitle].find(
+        (task) => task.id === active.id
+      );
+
       if (activeContainer === overContainer) {
         newItems = {
           ...taskGroups,
@@ -142,7 +157,7 @@ const MainWindow = () => {
           ),
         };
       } else {
-        setActiveTask(activeContainer[active.id]);
+        setActiveTask(taskActive!);
 
         newItems = moveBetweenContainers(
           taskGroups,
@@ -150,11 +165,11 @@ const MainWindow = () => {
           activeIndex,
           overContainer,
           overIndex,
-          activeContainer[active.id]
+          taskActive!
         );
       }
 
-      dispatch(setTaskGroup(newItems));
+      setTaskGroups(newItems);
     }
 
     setActiveId(null);
@@ -182,6 +197,11 @@ const MainWindow = () => {
     };
   };
 
+  useEffect(() => {
+    setTaskGroups(filterTaskToTaskGroup(initListTask));
+    setTotalTask(initListTask.length);
+  }, [initListTask]);
+
   return (
     <Box sx={{ display: 'flex' }}>
       <Sidebar />
@@ -206,12 +226,13 @@ const MainWindow = () => {
         >
           {taskGroups ? (
             <>
-              {Object.entries(taskGroups).map(([key, element]) => (
+              {Object.entries(taskGroups).map(([key, listTask]) => (
                 <Box key={key}>
                   <Droppable
                     groupName={key}
-                    listTask={element}
+                    listTask={listTask}
                     activeId={activeId}
+                    totalTask={totalTask}
                   />
                 </Box>
               ))}

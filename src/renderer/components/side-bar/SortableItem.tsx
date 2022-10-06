@@ -6,7 +6,10 @@ import { Box } from '@mui/material';
 import Workspace from './Workspace';
 import ContextMenuWorkspace from '../menus/context-menu-workspace';
 import { useDispatch } from 'react-redux';
-import { setWorkspaceActiveId } from '../../store/workspaceManagerSlice';
+import {
+  setWorkspaceActiveId,
+  setWorkspaceActiveName,
+} from '../../store/workspaceManagerSlice';
 
 interface ISortableItemProps {
   workspaceId: string;
@@ -42,6 +45,7 @@ const SortableWorkspace = ({
 
   const handleClick = (workspaceId: string) => {
     dispatch(setWorkspaceActiveId(workspaceId));
+    dispatch(setWorkspaceActiveName(workspaceRender!.name));
   };
 
   return (

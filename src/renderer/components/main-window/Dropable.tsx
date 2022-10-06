@@ -14,9 +14,10 @@ interface DroppableProps {
   groupName: string;
   listTask?: ITask[];
   activeId?: UniqueIdentifier | null;
+  totalTask: number;
 }
 
-const Droppable = ({ groupName, listTask }: DroppableProps) => {
+const Droppable = ({ groupName, listTask, totalTask }: DroppableProps) => {
   const { setNodeRef } = useDroppable({ id: groupName });
 
   const [openDialogCreateTask, setOpenDialogCreateTask] = useState(false);
@@ -85,6 +86,7 @@ const Droppable = ({ groupName, listTask }: DroppableProps) => {
         groupName={groupName}
         open={openDialogCreateTask}
         handleClose={() => setOpenDialogCreateTask(false)}
+        totalTask={totalTask}
       />
     </SortableContext>
   );

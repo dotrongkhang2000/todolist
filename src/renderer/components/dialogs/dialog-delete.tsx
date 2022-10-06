@@ -7,9 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { useDispatch } from 'react-redux';
-import { deleteTask } from '../../store/workspaceManagerSlice';
-import { deleteWorkspaceInData } from '../../firebase/services';
+import { deleteTask, deleteWorkspace } from '../../firebase/services';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -35,17 +33,21 @@ const DialogDelete = ({
   dialogName,
   workspace,
 }: IAlertDialogSlideProps) => {
-  const dispatch = useDispatch();
-
   const handleDelete = () => {
     switch (dialogName) {
       case 'task':
-        dispatch(deleteTask({ status: task!.status, taskId: task!.id }));
+        deleteTask(task!.id)
+          .then(() => {
+            // eslint-disable-next-line no-console
+            console.log('alert delete task success');
+          })
+          // eslint-disable-next-line no-console
+          .catch((err) => console.log(err));
         break;
       case 'workspace':
         // dispatch(deleteWorkspace(workspace!));
 
-        deleteWorkspaceInData(workspace!)
+        deleteWorkspace(workspace!.id)
           .then(() => {
             // eslint-disable-next-line no-console
             console.log('alert delete success');

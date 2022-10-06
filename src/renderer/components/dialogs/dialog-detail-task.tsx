@@ -16,10 +16,9 @@ import {
   Theme,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateTask } from '../../store/workspaceManagerSlice';
 import { PriorityIcon, TitleIcon } from '../utils/renderIcon';
 import { DeleteForever as DeleteForeverIcon } from '@mui/icons-material';
+import { setTask as updateTask } from '../../firebase/services';
 import DialogDelete from './dialog-delete';
 
 interface IDialogDetailTask {
@@ -98,8 +97,6 @@ const DialogDetailTask = ({
   handleClose,
   taskRender,
 }: IDialogDetailTask) => {
-  const dispatch = useDispatch();
-
   const [task, setTask] = useState(taskRender);
 
   const [openDialogDeleteTask, setOpenDialogDeleteTask] = useState(false);
@@ -119,7 +116,13 @@ const DialogDetailTask = ({
   };
 
   const handleSaveBtn = () => {
-    dispatch(updateTask(task));
+    updateTask(task)
+      .then(() => {
+        // eslint-disable-next-line no-console
+        console.log('success');
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
 
     handleClose();
   };

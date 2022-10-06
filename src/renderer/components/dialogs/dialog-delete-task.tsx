@@ -7,8 +7,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { useDispatch } from 'react-redux';
-import { deleteTask } from '../../store/workspaceManagerSlice';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -30,11 +28,7 @@ const DialogDeleteTask = ({
   handleClose,
   task,
 }: IAlertDialogSlideProps) => {
-  const dispatch = useDispatch();
-
   const handleDeleteTask = () => {
-    dispatch(deleteTask({ status: task.status, taskId: task.id }));
-
     handleClose();
   };
 
