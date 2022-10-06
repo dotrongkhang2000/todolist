@@ -94,6 +94,8 @@ const Sidebar = () => {
       const initWorkspaceActiveId = initListWorkspace[0].id;
       const initWorkspaceActiveName = initListWorkspace[0].name;
 
+      setActiveWorkspaceId(initWorkspaceActiveId);
+
       dispatch(setWorkspaceActiveIdInReduxStore(initWorkspaceActiveId));
       dispatch(setWorkspaceActiveName(initWorkspaceActiveName));
     }
