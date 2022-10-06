@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import alertManagerReducer from './alertManagerSlice';
 import workspaceManagerReducer from './workspaceManagerSlice';
 
 export const store = configureStore({
   reducer: {
     workspaceManager: workspaceManagerReducer,
+    alertManager: alertManagerReducer,
   },
 });
 

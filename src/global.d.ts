@@ -1,3 +1,5 @@
+import { AlertColor } from '@mui/material';
+
 declare global {
   type TaskGroupTitle =
     | 'Backlog'
@@ -46,6 +48,11 @@ declare global {
     fieldName: string;
     operator: WhereFilterOp;
     compareValue: string;
+  }
+
+  interface IAlertProps {
+    severity: AlertColor;
+    mess: string;
   }
 }
 
