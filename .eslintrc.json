@@ -24,6 +24,6 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     "no-undef": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
-    "no-console": "error"
+    "no-console": "warn"
   }
 }

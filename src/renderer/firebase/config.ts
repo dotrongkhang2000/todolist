@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -9,6 +10,8 @@ import { getFirestore } from 'firebase/firestore';
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: 'todolist-228cd.firebaseapp.com',
+  databaseURL:
+    'https://todolist-228cd-default-rtdb.asia-southeast1.firebasedatabase.app',
   projectId: 'todolist-228cd',
   storageBucket: 'todolist-228cd.appspot.com',
   messagingSenderId: '598008319236',
@@ -19,5 +22,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
-export { db };
+export { db, storage };
