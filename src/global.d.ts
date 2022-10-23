@@ -50,7 +50,7 @@ declare global {
     compareValue: string;
   }
 
-  interface IAlertProps {
+  interface IAlert {
     severity: AlertColor;
     mess: string;
   }

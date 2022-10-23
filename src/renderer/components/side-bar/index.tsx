@@ -18,23 +18,50 @@ import { arrayMove as DndKitSortArray } from '@dnd-kit/sortable';
 import Droppable from './Droppable';
 import Workspace from './Workspace';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import DialogAddWorkspace from '../dialogs/dialog-add-workspace';
 import BootstrapTooltip from '../utils/BootstrapTooltip';
-import { useDispatch } from 'react-redux';
-import {
-  setWorkspaceActiveId as setWorkspaceActiveIdInReduxStore,
-  setWorkspaceActiveName,
-} from '../../store/workspaceManagerSlice';
+
 import useFirestore from '../../hooks/useFirestore';
+import create from 'zustand';
+import DialogActionsWorkspace from '../dialogs/dialog-actions-workspace';
+import { TitleDialogActionsWorkspace } from '../../../common/Dialogs';
+
+interface IWorkspaceManagerState {
+  workspaceActiveId: string;
+  workspaceActiveName: string;
+  updateWorkspaceActiveId: (id: string) => void;
+  updateWorkspaceActiveName: (name: string) => void;
+}
+
+export const useWorkspaceManagerStore = create<IWorkspaceManagerState>(
+  (set) => ({
+    workspaceActiveId: '',
+    workspaceActiveName: '',
+    updateWorkspaceActiveId: (id) =>
+      set((state) => ({
+        ...state,
+        workspaceActiveId: id,
+      })),
+    updateWorkspaceActiveName(name) {
+      set((state) => ({
+        ...state,
+        workspaceActiveName: name,
+      }));
+    },
+  })
+);
 
 const Sidebar = () => {
   const initListWorkspace: IWorkspace[] = useFirestore({
     collection: 'list-workspace',
   });
 
-  const [listWorkspace, setListWorkspace] = useState<IWorkspace[]>([]);
+  const { updateWorkspaceActiveId, updateWorkspaceActiveName } =
+    useWorkspaceManagerStore((state) => ({
+      updateWorkspaceActiveId: state.updateWorkspaceActiveId,
+      updateWorkspaceActiveName: state.updateWorkspaceActiveName,
+    }));
 
-  const dispatch = useDispatch();
+  const [listWorkspace, setListWorkspace] = useState<IWorkspace[]>([]);
 
   const [openDialogAddWorkspace, setOpenDialogAddWorkspace] = useState(false);
 
@@ -96,8 +123,8 @@ const Sidebar = () => {
 
       setActiveWorkspaceId(initWorkspaceActiveId);
 
-      dispatch(setWorkspaceActiveIdInReduxStore(initWorkspaceActiveId));
-      dispatch(setWorkspaceActiveName(initWorkspaceActiveName));
+      updateWorkspaceActiveId(initWorkspaceActiveId);
+      updateWorkspaceActiveName(initWorkspaceActiveName);
     }
   }, [initListWorkspace]);
 
@@ -163,10 +190,27 @@ const Sidebar = () => {
         </DragOverlay>
       </DndContext>
 
-      <DialogAddWorkspace
+      <DialogActionsWorkspace
         open={openDialogAddWorkspace}
         handleClose={() => setOpenDialogAddWorkspace(false)}
+        initialWorkspace={{
+          id: '',
+          name: '',
+          imgUrl: '',
+          taskManager: {
+            totalTask: 0,
+            taskGroups: {
+              Backlog: [],
+              Todo: [],
+              'In Progress': [],
+              'In Review': [],
+              Done: [],
+              Canceled: [],
+            },
+          },
+        }}
         totalWorkspace={listWorkspace.length}
+        title={TitleDialogActionsWorkspace.ADD_WORKSPACE}
       />
     </Box>
   );

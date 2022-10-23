@@ -17,16 +17,15 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Droppable from './Dropable';
 import { removeAtIndex, insertAtIndex, arrayMove } from '../utils/handleArray';
 import Item from './Item';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import Sidebar from '../side-bar';
+import Sidebar, { useWorkspaceManagerStore } from '../side-bar';
 import useFirestore, { useFirestoreState } from '../../hooks/useFirestore';
 import filterTaskToTaskGroup from '../utils/filterTaskToTaskGroups';
 import { setTask } from '../../firebase/services';
+import Alert from '../alert';
 
 const MainWindow = () => {
-  const workspaceActiveId = useSelector(
-    (state: RootState) => state.workspaceManager.workspaceActiveId
+  const workspaceActiveId = useWorkspaceManagerStore(
+    (state) => state.workspaceActiveId
   );
 
   const fetchingDataTask = useFirestoreState((state) => state.loading);
@@ -254,6 +253,7 @@ const MainWindow = () => {
           </DndContext>
         </>
       )}
+      <Alert />
     </Box>
   );
 };

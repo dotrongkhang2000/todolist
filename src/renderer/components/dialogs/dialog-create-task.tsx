@@ -15,10 +15,9 @@ import {
   Theme,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
 import { PriorityIcon, TitleIcon } from '../utils/renderIcon';
 import { setTask as setTaskFB } from '../../firebase/services';
+import { useWorkspaceManagerStore } from '../side-bar';
 
 interface IDialogCreateTask {
   open: boolean;
@@ -98,11 +97,11 @@ const DialogCreateTask = ({
   groupName,
   totalTask,
 }: IDialogCreateTask) => {
-  const workspaceActiveId = useSelector(
-    (state: RootState) => state.workspaceManager.workspaceActiveId
-  );
-  const workspaceActiveName = useSelector(
-    (state: RootState) => state.workspaceManager.workspaceActiveName
+  const { workspaceActiveId, workspaceActiveName } = useWorkspaceManagerStore(
+    (state) => ({
+      workspaceActiveId: state.workspaceActiveId,
+      workspaceActiveName: state.workspaceActiveName,
+    })
   );
 
   const [task, setTask] = useState<ITask>({
