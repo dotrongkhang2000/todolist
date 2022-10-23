@@ -8,15 +8,30 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
+import create from 'zustand';
 interface IUseFirestoreProps {
   collection: string;
   condition?: ICondition;
 }
 
+interface IFirestoreState {
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+}
+
+export const useFirestoreState = create<IFirestoreState>((set) => ({
+  loading: true,
+  setLoading: (val) => set(() => ({ loading: val })),
+}));
+
 const useFirestore = ({ collection, condition }: IUseFirestoreProps) => {
   const [document, setDocument] = useState<any>([]);
 
+  const setLoading = useFirestoreState((state) => state.setLoading);
+
   useEffect(() => {
+    setLoading(true);
+
     const collectionRef = collectionFirestore(db, collection);
 
     let q: Query<DocumentData> = query(collectionRef);
@@ -38,6 +53,7 @@ const useFirestore = ({ collection, condition }: IUseFirestoreProps) => {
       }));
 
       setDocument(list);
+      setLoading(false);
     });
 
     return () => {

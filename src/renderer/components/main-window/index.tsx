@@ -12,7 +12,7 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import Droppable from './Dropable';
 import { removeAtIndex, insertAtIndex, arrayMove } from '../utils/handleArray';
@@ -20,7 +20,7 @@ import Item from './Item';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import Sidebar from '../side-bar';
-import useFirestore from '../../hooks/useFirestore';
+import useFirestore, { useFirestoreState } from '../../hooks/useFirestore';
 import filterTaskToTaskGroup from '../utils/filterTaskToTaskGroups';
 import { setTask } from '../../firebase/services';
 
@@ -28,6 +28,8 @@ const MainWindow = () => {
   const workspaceActiveId = useSelector(
     (state: RootState) => state.workspaceManager.workspaceActiveId
   );
+
+  const fetchingDataTask = useFirestoreState((state) => state.loading);
 
   const [totalTask, setTotalTask] = useState(0);
 
@@ -205,46 +207,53 @@ const MainWindow = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <Sidebar />
-      <DndContext
-        sensors={sensors}
-        onDragStart={handleDragStart}
-        onDragCancel={handleDragCancel}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-      >
-        <Box
-          sx={{
-            display: '-webkit-box',
-            justifyContent: 'space-around',
-            p: 1,
-            backgroundImage:
-              'linear-gradient(to bottom right, #321D81 , #DD499D)',
-            height: '100vh',
-            overflowX: 'scroll',
-            width: 1,
-          }}
-        >
-          {taskGroups ? (
-            <>
-              {Object.entries(taskGroups).map(([key, listTask]) => (
-                <Box key={key}>
-                  <Droppable
-                    groupName={key}
-                    listTask={listTask}
-                    activeId={activeId}
-                    totalTask={totalTask}
-                  />
-                </Box>
-              ))}
-              <DragOverlay>
-                {activeId !== null ? (
-                  <Item task={activeTask} dragOverlay />
-                ) : null}
-              </DragOverlay>
-            </>
-          ) : null}
+      {fetchingDataTask ? (
+        <Box sx={{ flex: 1, textAlign: 'center', mt: 3 }}>
+          <CircularProgress />
         </Box>
-      </DndContext>
+      ) : (
+        <>
+          <DndContext
+            sensors={sensors}
+            onDragStart={handleDragStart}
+            onDragCancel={handleDragCancel}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+          >
+            <Box
+              sx={{
+                display: '-webkit-box',
+                justifyContent: 'space-around',
+                p: 1,
+                backgroundColor: '#F4F5F8',
+                height: '100vh',
+                overflowX: 'scroll',
+                width: 1,
+              }}
+            >
+              {taskGroups ? (
+                <>
+                  {Object.entries(taskGroups).map(([key, listTask]) => (
+                    <Box key={key}>
+                      <Droppable
+                        groupName={key}
+                        listTask={listTask}
+                        activeId={activeId}
+                        totalTask={totalTask}
+                      />
+                    </Box>
+                  ))}
+                  <DragOverlay>
+                    {activeId !== null ? (
+                      <Item task={activeTask} dragOverlay />
+                    ) : null}
+                  </DragOverlay>
+                </>
+              ) : null}
+            </Box>
+          </DndContext>
+        </>
+      )}
     </Box>
   );
 };

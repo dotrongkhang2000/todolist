@@ -42,7 +42,7 @@ const Item = ({ task, dragOverlay }: IItemProps) => {
       <Card
         sx={{
           width: 326,
-          mb: 1,
+          my: 1,
           mx: 'auto',
           '&:hover': {
             backgroundColor: dragOverlay! ? '#fff' : '#eee',
