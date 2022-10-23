@@ -13,28 +13,37 @@ import {
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 import React, { useState } from 'react';
+import { TitleDialogActionsWorkspace } from '../../../common/Dialogs';
 import { storage } from '../../firebase/config';
 import { setListWorkspace } from '../../firebase/services';
+import { useAlearManagerStore } from '../alert';
 
 interface IDialogEditWorkspaceProps {
   open: boolean;
   handleClose: () => void;
-  workspaceRender: IWorkspace;
+  initialWorkspace: IWorkspace;
+  title?: string;
+  totalWorkspace?: number;
 }
 
-const DialogEditWorkspace = ({
+const DialogActionsWorkspace = ({
   open,
   handleClose,
-  workspaceRender,
+  initialWorkspace,
+  title,
+  totalWorkspace,
 }: IDialogEditWorkspaceProps) => {
-  const [workspace, setWorkspace] = useState(workspaceRender);
+  const [workspace, setWorkspace] = useState(initialWorkspace);
   const [imgWorkspaceUrl, setImgWorkspaceUrl] = useState('');
 
   const handleChange = (change: Partial<IWorkspace>) => {
     setWorkspace({ ...workspace, ...change });
   };
 
-  const handleSaveBtn = () => {
+  const addAlert = useAlearManagerStore((state) => state.addAlert);
+  const removeAlert = useAlearManagerStore((state) => state.removeAlert);
+
+  const handleEditWorkspace = () => {
     setListWorkspace(workspace)
       // eslint-disable-next-line no-console
       .then(() => console.log('alert edit success'))
@@ -44,9 +53,49 @@ const DialogEditWorkspace = ({
     handleClose();
   };
 
+  const handleAddWorkspace = () => {
+    if (!workspace.name) {
+      const alert: IAlert = {
+        severity: 'error',
+        mess: 'Please enter a name workspace before submit',
+      };
+
+      addAlert(alert);
+
+      /** Remove alert after 3s */
+      setTimeout(() => {
+        removeAlert();
+      }, 3000);
+
+      return;
+    }
+
+    setListWorkspace({
+      ...workspace,
+      id: `Workspace-${totalWorkspace!}`,
+    })
+      .then(() => {
+        // eslint-disable-next-line no-console
+        console.log('alert add suscessfully');
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
+
+    handleClose();
+  };
+
+  const handleSubmit = () => {
+    switch (title) {
+      case TitleDialogActionsWorkspace.ADD_WORKSPACE:
+        handleAddWorkspace();
+        break;
+      default:
+        handleEditWorkspace();
+    }
+  };
+
   const getImgUrl = (filePath: string) => {
     const imageRef = ref(storage, filePath);
-
     getDownloadURL(imageRef)
       .then((url) => {
         setImgWorkspaceUrl(url);
@@ -72,7 +121,9 @@ const DialogEditWorkspace = ({
 
   return (
     <Dialog fullWidth open={open} onClose={() => handleClose()}>
-      <DialogTitle id="alert-dialog-title">{workspace.id}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">
+        {title ?? workspace.name}
+      </DialogTitle>
       <DialogContent>
         <TextField
           required
@@ -120,7 +171,7 @@ const DialogEditWorkspace = ({
         <Button onClick={handleClose} variant="outlined">
           Cancel
         </Button>
-        <Button onClick={() => handleSaveBtn()} autoFocus variant="contained">
+        <Button onClick={() => handleSubmit()} autoFocus variant="contained">
           Save
         </Button>
       </DialogActions>
@@ -128,4 +179,4 @@ const DialogEditWorkspace = ({
   );
 };
 
-export default DialogEditWorkspace;
+export default DialogActionsWorkspace;

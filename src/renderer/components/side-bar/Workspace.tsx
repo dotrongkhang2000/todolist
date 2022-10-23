@@ -2,9 +2,8 @@ import { Avatar, Box, Typography } from '@mui/material';
 
 import BootstrapTooltip from '../utils/BootstrapTooltip';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
 import { blue } from '@mui/material/colors';
+import { useWorkspaceManagerStore } from '.';
 
 interface IWorkspaceProps {
   workspace: IWorkspace;
@@ -12,8 +11,8 @@ interface IWorkspaceProps {
 }
 
 const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
-  const workspaceActivId = useSelector(
-    (state: RootState) => state.workspaceManager.workspaceActiveId
+  const workspaceActivId = useWorkspaceManagerStore(
+    (state) => state.workspaceActiveId
   );
 
   return (

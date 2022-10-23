@@ -5,11 +5,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Box } from '@mui/material';
 import Workspace from './Workspace';
 import ContextMenuWorkspace from '../menus/context-menu-workspace';
-import { useDispatch } from 'react-redux';
-import {
-  setWorkspaceActiveId,
-  setWorkspaceActiveName,
-} from '../../store/workspaceManagerSlice';
+import { useWorkspaceManagerStore } from '.';
 
 interface ISortableItemProps {
   workspaceId: string;
@@ -29,7 +25,11 @@ const SortableWorkspace = ({
     isDragging,
   } = useSortable({ id: workspaceId });
 
-  const dispatch = useDispatch();
+  const { updateWorkspaceActiveId, updateWorkspaceActiveName } =
+    useWorkspaceManagerStore((state) => ({
+      updateWorkspaceActiveId: state.updateWorkspaceActiveId,
+      updateWorkspaceActiveName: state.updateWorkspaceActiveName,
+    }));
 
   const workspaceRender = listWorkspace.find(
     (workspace) => workspace.id === workspaceId
@@ -44,8 +44,8 @@ const SortableWorkspace = ({
   };
 
   const handleClick = (workspaceId: string) => {
-    dispatch(setWorkspaceActiveId(workspaceId));
-    dispatch(setWorkspaceActiveName(workspaceRender!.name));
+    updateWorkspaceActiveId(workspaceId);
+    updateWorkspaceActiveName(workspaceRender!.name);
   };
 
   return (

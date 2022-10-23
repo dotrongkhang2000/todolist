@@ -9,7 +9,7 @@ import {
 import { Delete, Edit } from '@mui/icons-material';
 import React, { useState } from 'react';
 import DialogDelete from '../dialogs/dialog-delete';
-import DialogEditWorkspace from '../dialogs/dialog-edit-workspace';
+import DialogActionsWorkspace from '../dialogs/dialog-actions-workspace';
 
 interface IMenuWorkspaceProps {
   anchorEl: HTMLElement | null;
@@ -93,10 +93,10 @@ const ContextMenuWorkspace = ({
         workspace={workspace}
       />
 
-      <DialogEditWorkspace
+      <DialogActionsWorkspace
         open={openDialogEditWorkspace}
         handleClose={() => setOpenDialogEditWorkspace(false)}
-        workspaceRender={workspace}
+        initialWorkspace={workspace}
       />
     </>
   );
