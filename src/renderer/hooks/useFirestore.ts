@@ -7,7 +7,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { db } from '@/renderer/firebase/config';
 import create from 'zustand';
 interface IUseFirestoreProps {
   collection: string;

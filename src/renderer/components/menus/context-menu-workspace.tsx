@@ -8,8 +8,8 @@ import {
 } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import React, { useState } from 'react';
-import DialogDelete from '../dialogs/dialog-delete';
-import DialogActionsWorkspace from '../dialogs/dialog-actions-workspace';
+import DialogDelete from '@/renderer/components/dialogs/dialog-delete';
+import DialogActionsWorkspace from '@/renderer/components/dialogs/dialog-actions-workspace';
 
 interface IMenuWorkspaceProps {
   anchorEl: HTMLElement | null;

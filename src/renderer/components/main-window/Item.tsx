@@ -10,10 +10,12 @@ import {
   Typography,
 } from '@mui/material';
 
+// eslint-disable-next-line no-restricted-imports
 import { green } from '@mui/material/colors';
+
 import React from 'react';
 
-import { PriorityIcon } from '../utils/renderIcon';
+import { PriorityIcon } from '@/renderer/components/utils/renderIcon';
 
 interface IItemProps {
   task: ITask | null;

@@ -1,5 +1,5 @@
 import { doc, setDoc, deleteDoc, collection } from 'firebase/firestore';
-import { db } from './config';
+import { db } from '@/renderer/firebase/config';
 
 /**
  * Function use for add and update new workspace

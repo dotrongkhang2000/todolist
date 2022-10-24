@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CssBaseline } from '@mui/material';
-import MainWindow from './components/main-window';
+import MainWindow from '@/renderer/components/main-window';
 
 function App() {
   return (

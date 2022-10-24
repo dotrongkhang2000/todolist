@@ -14,6 +14,7 @@ import {
 import { SxProps, Theme } from '@mui/material';
 import React from 'react';
 
+// eslint-disable-next-line no-restricted-imports
 import { yellow } from '@mui/material/colors';
 
 export const PriorityIcon = (

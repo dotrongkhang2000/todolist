@@ -3,9 +3,9 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { Box } from '@mui/material';
-import Workspace from './Workspace';
-import ContextMenuWorkspace from '../menus/context-menu-workspace';
-import { useWorkspaceManagerStore } from '.';
+import Workspace from '@/renderer/components/side-bar/Workspace';
+import ContextMenuWorkspace from '@/renderer/components/menus/context-menu-workspace';
+import { useWorkspaceManagerStore } from '@/renderer/components/side-bar/index';
 
 interface ISortableItemProps {
   workspaceId: string;

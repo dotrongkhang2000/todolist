@@ -15,15 +15,15 @@ import {
 import React, { SetStateAction, useEffect, useState } from 'react';
 
 import { arrayMove as DndKitSortArray } from '@dnd-kit/sortable';
-import Droppable from './Droppable';
-import Workspace from './Workspace';
+import Droppable from '@/renderer/components/side-bar/Droppable';
+import Workspace from '@/renderer/components/side-bar/Workspace';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import BootstrapTooltip from '../utils/BootstrapTooltip';
+import BootstrapTooltip from '@/renderer/components/utils/BootstrapTooltip';
 
-import useFirestore from '../../hooks/useFirestore';
+import useFirestore from '@/renderer/hooks/useFirestore';
 import create from 'zustand';
-import DialogActionsWorkspace from '../dialogs/dialog-actions-workspace';
-import { TitleDialogActionsWorkspace } from '../../../common/Dialogs';
+import DialogActionsWorkspace from '@/renderer/components/dialogs/dialog-actions-workspace';
+import { TitleDialogActionsWorkspace } from '@/common/Dialogs';
 
 interface IWorkspaceManagerState {
   workspaceActiveId: string;
