@@ -1,6 +1,6 @@
 import { ReportHandler } from 'web-vitals';
 
-const reportWebVitals = async (onPerfEntry?: ReportHandler) => {
+export const reportWebVitals = async (onPerfEntry?: ReportHandler) => {
   if (onPerfEntry != null && onPerfEntry instanceof Function) {
     await import('web-vitals').then(
       ({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
@@ -13,5 +13,3 @@ const reportWebVitals = async (onPerfEntry?: ReportHandler) => {
     );
   }
 };
-
-export default reportWebVitals;

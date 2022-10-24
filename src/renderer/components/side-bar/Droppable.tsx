@@ -1,5 +1,5 @@
 import { SortableContext } from '@dnd-kit/sortable';
-import SortableWorkspace from '@/renderer/components/side-bar/SortableItem';
+import { SortableWorkspace } from '@/renderer/components/side-bar/SortableItem';
 import React from 'react';
 
 interface IDropableProps {
@@ -8,7 +8,7 @@ interface IDropableProps {
   activeWorkspaceId: string;
 }
 
-const Droppable = ({
+export const Droppable = ({
   workspaceId,
   listWorkspace,
   activeWorkspaceId,
@@ -22,5 +22,3 @@ const Droppable = ({
     </SortableContext>
   );
 };
-
-export default Droppable;

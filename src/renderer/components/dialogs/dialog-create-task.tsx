@@ -94,7 +94,7 @@ const SelectComponent = ({
   </FormControl>
 );
 
-const DialogCreateTask = ({
+export const DialogCreateTask = ({
   open,
   handleClose,
   groupName,
@@ -197,5 +197,3 @@ const DialogCreateTask = ({
     </Dialog>
   );
 };
-
-export default DialogCreateTask;

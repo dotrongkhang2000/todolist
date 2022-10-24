@@ -34,7 +34,7 @@ const UserStatus = () => (
   />
 );
 
-const Item = ({ task, dragOverlay }: IItemProps) => {
+export const Item = ({ task, dragOverlay }: IItemProps) => {
   return (
     <Box
       sx={{
@@ -80,5 +80,3 @@ const Item = ({ task, dragOverlay }: IItemProps) => {
     </Box>
   );
 };
-
-export default Item;

@@ -29,7 +29,7 @@ interface IAlertDialogSlideProps {
   workspace?: IWorkspace;
 }
 
-const DialogDelete = ({
+export const DialogDelete = ({
   open,
   handleClose,
   task,
@@ -94,5 +94,3 @@ const DialogDelete = ({
     </Dialog>
   );
 };
-
-export default DialogDelete;
