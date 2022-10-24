@@ -26,7 +26,7 @@ interface IDialogEditWorkspaceProps {
   totalWorkspace?: number;
 }
 
-const DialogActionsWorkspace = ({
+export const DialogActionsWorkspace = ({
   open,
   handleClose,
   initialWorkspace,
@@ -178,5 +178,3 @@ const DialogActionsWorkspace = ({
     </Dialog>
   );
 };
-
-export default DialogActionsWorkspace;

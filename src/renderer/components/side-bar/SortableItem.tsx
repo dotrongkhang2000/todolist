@@ -3,8 +3,8 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { Box } from '@mui/material';
-import Workspace from '@/renderer/components/side-bar/Workspace';
-import ContextMenuWorkspace from '@/renderer/components/menus/context-menu-workspace';
+import { Workspace } from '@/renderer/components/side-bar/Workspace';
+import { ContextMenuWorkspace } from '@/renderer/components/menus/context-menu-workspace';
 import { useWorkspaceManagerStore } from '@/renderer/components/side-bar/index';
 
 interface ISortableItemProps {
@@ -12,7 +12,7 @@ interface ISortableItemProps {
   listWorkspace: IWorkspace[];
 }
 
-const SortableWorkspace = ({
+export const SortableWorkspace = ({
   workspaceId,
   listWorkspace,
 }: ISortableItemProps) => {
@@ -73,5 +73,3 @@ const SortableWorkspace = ({
     </>
   );
 };
-
-export default SortableWorkspace;

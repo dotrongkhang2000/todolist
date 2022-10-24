@@ -1,9 +1,11 @@
 import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import React from 'react';
 
-const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme }) => ({
+export const BootstrapTooltip = styled(
+  ({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  )
+)(({ theme }) => ({
   [`& .${tooltipClasses.arrow}`]: {
     color: theme.palette.common.black,
   },
@@ -11,5 +13,3 @@ const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     backgroundColor: theme.palette.common.black,
   },
 }));
-
-export default BootstrapTooltip;

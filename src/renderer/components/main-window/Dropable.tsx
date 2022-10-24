@@ -1,7 +1,7 @@
 import { UniqueIdentifier, useDroppable } from '@dnd-kit/core';
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 
-import SortableItem from '@/renderer/components/main-window/SortableItem';
+import { SortableItem } from '@/renderer/components/main-window/SortableItem';
 
 import { Add as AddIcon } from '@mui/icons-material';
 
@@ -9,7 +9,7 @@ import { IconButton, List, ListSubheader, Box } from '@mui/material';
 
 import { TitleIcon } from '@/renderer/components/utils/renderIcon';
 import React, { useState } from 'react';
-import DialogCreateTask from '@/renderer/components/dialogs/dialog-create-task';
+import { DialogCreateTask } from '@/renderer/components/dialogs/dialog-create-task';
 interface DroppableProps {
   groupName: string;
   listTask?: ITask[];
@@ -17,7 +17,11 @@ interface DroppableProps {
   totalTask: number;
 }
 
-const Droppable = ({ groupName, listTask, totalTask }: DroppableProps) => {
+export const Droppable = ({
+  groupName,
+  listTask,
+  totalTask,
+}: DroppableProps) => {
   const { setNodeRef } = useDroppable({ id: groupName });
 
   const [openDialogCreateTask, setOpenDialogCreateTask] = useState(false);
@@ -91,5 +95,3 @@ const Droppable = ({ groupName, listTask, totalTask }: DroppableProps) => {
     </SortableContext>
   );
 };
-
-export default Droppable;

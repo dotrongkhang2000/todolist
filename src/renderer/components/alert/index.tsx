@@ -35,7 +35,7 @@ export const useAlearManagerStore = create<IAlertManagerState>((set) => ({
   },
 }));
 
-const Alert = () => {
+export const Alert = () => {
   const listAlert = useAlearManagerStore((state) => state.listAlert);
   const removeAlert = useAlearManagerStore((state) => state.removeAlert);
 
@@ -73,5 +73,3 @@ const Alert = () => {
     </Box>
   );
 };
-
-export default Alert;

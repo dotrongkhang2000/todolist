@@ -24,7 +24,7 @@ export const useFirestoreState = create<IFirestoreState>((set) => ({
   setLoading: (val) => set(() => ({ loading: val })),
 }));
 
-const useFirestore = ({ collection, condition }: IUseFirestoreProps) => {
+export const useFirestore = ({ collection, condition }: IUseFirestoreProps) => {
   const [document, setDocument] = useState<any>([]);
 
   const setLoading = useFirestoreState((state) => state.setLoading);
@@ -63,5 +63,3 @@ const useFirestore = ({ collection, condition }: IUseFirestoreProps) => {
 
   return document;
 };
-
-export default useFirestore;

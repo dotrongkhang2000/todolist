@@ -1,4 +1,4 @@
-const filterTaskToTaskGroup = (listTask: ITask[]) => {
+export const filterTaskToTaskGroup = (listTask: ITask[]) => {
   const initTaskGroups: Record<TaskGroupTitle, ITask[]> = {
     Backlog: [],
     Todo: [],
@@ -16,5 +16,3 @@ const filterTaskToTaskGroup = (listTask: ITask[]) => {
     };
   }, initTaskGroups);
 };
-
-export default filterTaskToTaskGroup;

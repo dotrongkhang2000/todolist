@@ -15,14 +15,14 @@ import {
 import React, { SetStateAction, useEffect, useState } from 'react';
 
 import { arrayMove as DndKitSortArray } from '@dnd-kit/sortable';
-import Droppable from '@/renderer/components/side-bar/Droppable';
-import Workspace from '@/renderer/components/side-bar/Workspace';
+import { Droppable } from '@/renderer/components/side-bar/Droppable';
+import { Workspace } from '@/renderer/components/side-bar/Workspace';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import BootstrapTooltip from '@/renderer/components/utils/BootstrapTooltip';
+import { BootstrapTooltip } from '@/renderer/components/utils/BootstrapTooltip';
 
-import useFirestore from '@/renderer/hooks/useFirestore';
+import { useFirestore } from '@/renderer/hooks/useFirestore';
 import create from 'zustand';
-import DialogActionsWorkspace from '@/renderer/components/dialogs/dialog-actions-workspace';
+import { DialogActionsWorkspace } from '@/renderer/components/dialogs/dialog-actions-workspace';
 import { TitleDialogActionsWorkspace } from '@/common/Dialogs';
 
 interface IWorkspaceManagerState {
@@ -50,7 +50,7 @@ export const useWorkspaceManagerStore = create<IWorkspaceManagerState>(
   })
 );
 
-const Sidebar = () => {
+export const Sidebar = () => {
   const initListWorkspace: IWorkspace[] = useFirestore({
     collection: 'list-workspace',
   });
@@ -215,5 +215,3 @@ const Sidebar = () => {
     </Box>
   );
 };
-
-export default Sidebar;

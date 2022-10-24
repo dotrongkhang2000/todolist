@@ -22,7 +22,7 @@ import {
 } from '@/renderer/components/utils/renderIcon';
 import { DeleteForever as DeleteForeverIcon } from '@mui/icons-material';
 import { setTask as updateTask } from '@/renderer/firebase/services';
-import DialogDelete from '@/renderer/components/dialogs/dialog-delete';
+import { DialogDelete } from '@/renderer/components/dialogs/dialog-delete';
 
 interface IDialogDetailTask {
   open: boolean;
@@ -95,7 +95,7 @@ const SelectComponent = ({
   </FormControl>
 );
 
-const DialogDetailTask = ({
+export const DialogDetailTask = ({
   open,
   handleClose,
   taskRender,
@@ -201,5 +201,3 @@ const DialogDetailTask = ({
     </Dialog>
   );
 };
-
-export default DialogDetailTask;

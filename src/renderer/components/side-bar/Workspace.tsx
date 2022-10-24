@@ -1,6 +1,6 @@
 import { Avatar, Box, Typography } from '@mui/material';
 
-import BootstrapTooltip from '@/renderer/components/utils/BootstrapTooltip';
+import { BootstrapTooltip } from '@/renderer/components/utils/BootstrapTooltip';
 import React from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { blue } from '@mui/material/colors';
@@ -11,7 +11,7 @@ interface IWorkspaceProps {
   dragOverlay?: boolean;
 }
 
-const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
+export const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
   const workspaceActivId = useWorkspaceManagerStore(
     (state) => state.workspaceActiveId
   );
@@ -61,5 +61,3 @@ const Workspace = ({ workspace, dragOverlay }: IWorkspaceProps) => {
     </>
   );
 };
-
-export default Workspace;

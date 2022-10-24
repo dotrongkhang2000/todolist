@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-import Item from '@/renderer/components/main-window/Item';
+import { Item } from '@/renderer/components/main-window/Item';
 import { Box } from '@mui/material';
-import DialogDetailTask from '@/renderer/components/dialogs/dialog-detail-task';
+import { DialogDetailTask } from '@/renderer/components/dialogs/dialog-detail-task';
 
 interface ISortableItemProps {
   idTask: string;
@@ -12,7 +12,11 @@ interface ISortableItemProps {
   listTask: ITask[];
 }
 
-const SortableItem = ({ idTask, taskTitle, listTask }: ISortableItemProps) => {
+export const SortableItem = ({
+  idTask,
+  taskTitle,
+  listTask,
+}: ISortableItemProps) => {
   const {
     attributes,
     listeners,
@@ -54,5 +58,3 @@ const SortableItem = ({ idTask, taskTitle, listTask }: ISortableItemProps) => {
     </>
   );
 };
-
-export default SortableItem;
