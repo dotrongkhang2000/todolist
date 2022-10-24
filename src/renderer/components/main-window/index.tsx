@@ -14,14 +14,20 @@ import {
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { Box, CircularProgress } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
-import Droppable from './Dropable';
-import { removeAtIndex, insertAtIndex, arrayMove } from '../utils/handleArray';
-import Item from './Item';
-import Sidebar, { useWorkspaceManagerStore } from '../side-bar';
-import useFirestore, { useFirestoreState } from '../../hooks/useFirestore';
-import filterTaskToTaskGroup from '../utils/filterTaskToTaskGroups';
-import { setTask } from '../../firebase/services';
-import Alert from '../alert';
+import Droppable from '@/renderer/components/main-window/Dropable';
+import {
+  removeAtIndex,
+  insertAtIndex,
+  arrayMove,
+} from '@/renderer/components/utils/handleArray';
+import Item from '@/renderer/components/main-window/Item';
+import Sidebar, {
+  useWorkspaceManagerStore,
+} from '@/renderer/components/side-bar';
+import useFirestore, { useFirestoreState } from '@/renderer/hooks/useFirestore';
+import filterTaskToTaskGroup from '@/renderer/components/utils/filterTaskToTaskGroups';
+import { setTask } from '@/renderer/firebase/services';
+import Alert from '@/renderer/components/alert';
 
 const MainWindow = () => {
   const workspaceActiveId = useWorkspaceManagerStore(

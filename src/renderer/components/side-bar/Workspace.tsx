@@ -1,9 +1,10 @@
 import { Avatar, Box, Typography } from '@mui/material';
 
-import BootstrapTooltip from '../utils/BootstrapTooltip';
+import BootstrapTooltip from '@/renderer/components/utils/BootstrapTooltip';
 import React from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { blue } from '@mui/material/colors';
-import { useWorkspaceManagerStore } from '.';
+import { useWorkspaceManagerStore } from '@/renderer/components/side-bar/index';
 
 interface IWorkspaceProps {
   workspace: IWorkspace;

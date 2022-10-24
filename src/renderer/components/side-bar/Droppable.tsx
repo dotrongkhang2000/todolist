@@ -1,5 +1,5 @@
 import { SortableContext } from '@dnd-kit/sortable';
-import SortableWorkspace from './SortableItem';
+import SortableWorkspace from '@/renderer/components/side-bar/SortableItem';
 import React from 'react';
 
 interface IDropableProps {

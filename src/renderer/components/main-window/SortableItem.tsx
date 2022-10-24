@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-import Item from './Item';
+import Item from '@/renderer/components/main-window/Item';
 import { Box } from '@mui/material';
-import DialogDetailTask from '../dialogs/dialog-detail-task';
+import DialogDetailTask from '@/renderer/components/dialogs/dialog-detail-task';
 
 interface ISortableItemProps {
   idTask: string;

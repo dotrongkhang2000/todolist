@@ -24,6 +24,29 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     "no-undef": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
-    "no-console": "warn"
+    "no-console": "warn",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": [".*"],
+            "message": "Use @ alias instead."
+          },
+          {
+            "group": ["@mui/*/*", "@mui/*/*/*", "!@mui/material/test-utils/*"],
+            "message": "Use import { ... } from \"@mui/material\" instead."
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["@", "./src"]],
+        "extensions": [".ts", ".js", ".jsx", ".json"]
+      }
+    }
   }
 }

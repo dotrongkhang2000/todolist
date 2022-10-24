@@ -15,9 +15,12 @@ import {
   Theme,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { PriorityIcon, TitleIcon } from '../utils/renderIcon';
-import { setTask as setTaskFB } from '../../firebase/services';
-import { useWorkspaceManagerStore } from '../side-bar';
+import {
+  PriorityIcon,
+  TitleIcon,
+} from '@/renderer/components/utils/renderIcon';
+import { setTask as setTaskFB } from '@/renderer/firebase/services';
+import { useWorkspaceManagerStore } from '@/renderer/components/side-bar';
 
 interface IDialogCreateTask {
   open: boolean;
@@ -126,8 +129,11 @@ const DialogCreateTask = ({
   };
 
   const handleSubmit = () => {
+    const taskIndex = totalTask + 1;
+
     const taskId =
-      workspaceActiveName.slice(0, 3).toLocaleUpperCase() + `-${totalTask + 1}`;
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      workspaceActiveName.slice(0, 3).toLocaleUpperCase() + taskIndex;
 
     setTaskFB({ ...task, workspaceId: workspaceActiveId, id: taskId })
       // eslint-disable-next-line no-console

@@ -13,10 +13,10 @@ import {
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 import React, { useState } from 'react';
-import { TitleDialogActionsWorkspace } from '../../../common/Dialogs';
-import { storage } from '../../firebase/config';
-import { setListWorkspace } from '../../firebase/services';
-import { useAlearManagerStore } from '../alert';
+import { TitleDialogActionsWorkspace } from '@/common/Dialogs';
+import { storage } from '@/renderer/firebase/config';
+import { setListWorkspace } from '@/renderer/firebase/services';
+import { useAlearManagerStore } from '@/renderer/components/alert';
 
 interface IDialogEditWorkspaceProps {
   open: boolean;
@@ -65,7 +65,7 @@ const DialogActionsWorkspace = ({
       /** Remove alert after 3s */
       setTimeout(() => {
         removeAlert();
-      }, 3000);
+      }, 30000);
 
       return;
     }

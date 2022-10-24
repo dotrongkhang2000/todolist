@@ -1,15 +1,15 @@
 import { UniqueIdentifier, useDroppable } from '@dnd-kit/core';
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 
-import SortableItem from './SortableItem';
+import SortableItem from '@/renderer/components/main-window/SortableItem';
 
 import { Add as AddIcon } from '@mui/icons-material';
 
 import { IconButton, List, ListSubheader, Box } from '@mui/material';
 
-import { TitleIcon } from '../utils/renderIcon';
+import { TitleIcon } from '@/renderer/components/utils/renderIcon';
 import React, { useState } from 'react';
-import DialogCreateTask from '../dialogs/dialog-create-task';
+import DialogCreateTask from '@/renderer/components/dialogs/dialog-create-task';
 interface DroppableProps {
   groupName: string;
   listTask?: ITask[];
