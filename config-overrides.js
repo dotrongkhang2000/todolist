@@ -1,4 +1,3 @@
-const { useBabelRc, override } = require('customize-cra');
 const path = require('path');
 
 module.exports = {
@@ -12,7 +11,10 @@ module.exports = {
     );
     return paths;
   },
-  webpack: override(
-    useBabelRc()
-  )
+
+  webpack: (config) => {
+    config.target = 'web';
+    config.resolve.alias['@'] = path.resolve(__dirname, 'src');
+    return config;
+  }
 };

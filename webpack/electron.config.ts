@@ -18,8 +18,13 @@ const getElectronMainConfig = () => {
       rules: [
         {
           test: /\.ts$/, // Specifies that this rule should match all files that end with the .ts extension.
-          include: path.join('/', 'src', 'electron'), // Specifies that all files within src should be considered for matching this rule.
-          use: [{ loader: 'ts-loader' }], // Specifies which loader(s) to use when this rule matches.
+          loader: 'ts-loader', // Specifies which loader(s) to use when this rule matches.
+          options: {
+            compilerOptions: {
+              noEmit: false,
+            },
+          },
+          exclude: /node_modules/,
         },
       ],
     },

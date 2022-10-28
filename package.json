@@ -65,8 +65,9 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "webpack-electron": "webpack --config webpack/webpack.config.ts",
-    "webpack": "yarn webpack-electron",
+    "webpack-electron": "webpack --config webpack/electron.config.ts",
+    "webpack-electron-preload": "webpack --config webpack/electron-preload.config.ts",
+    "webpack": "yarn webpack-electron && yarn webpack-electron-preload",
     "webpack:dev": "cross-env NODE_ENV=development yarn webpack",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
