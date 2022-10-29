@@ -23,6 +23,9 @@ import {
 import { DeleteForever as DeleteForeverIcon } from '@mui/icons-material';
 import { setTask as updateTask } from '@/renderer/firebase/services';
 import { DialogDelete } from '@/renderer/components/dialogs/dialog-delete';
+import { schemaFormTask } from '@/renderer/components/dialogs/schema';
+import { useAlearManagerStore } from '@/renderer/components/alert';
+import { hasErrors } from '@/renderer/components/utils/hasError';
 
 interface IDialogDetailTask {
   open: boolean;
@@ -118,7 +121,20 @@ export const DialogDetailTask = ({
     setTask({ ...task, ...taskChange });
   };
 
+  const addAlert = useAlearManagerStore((state) => state.addAlert);
+  const removeAlert = useAlearManagerStore((state) => state.removeAlert);
+
   const handleSaveBtn = () => {
+    if (
+      hasErrors({
+        schema: schemaFormTask,
+        rawData: task,
+        addAlert,
+        removeAlert,
+      })
+    )
+      return;
+
     updateTask(task)
       .then(() => {
         // eslint-disable-next-line no-console

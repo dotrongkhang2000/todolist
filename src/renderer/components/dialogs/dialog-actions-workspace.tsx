@@ -16,6 +16,8 @@ import React, { useState } from 'react';
 import { TitleDialogActionsWorkspace } from '@/common/Dialogs';
 import { storage } from '@/renderer/firebase/config';
 import { setListWorkspace } from '@/renderer/firebase/services';
+import { schemaFormActionWorkspace } from '@/renderer/components/dialogs/schema';
+import { hasErrors } from '@/renderer/components/utils/hasError';
 import { useAlearManagerStore } from '@/renderer/components/alert';
 
 interface IDialogEditWorkspaceProps {
@@ -44,6 +46,16 @@ export const DialogActionsWorkspace = ({
   const removeAlert = useAlearManagerStore((state) => state.removeAlert);
 
   const handleEditWorkspace = () => {
+    if (
+      hasErrors({
+        schema: schemaFormActionWorkspace,
+        rawData: workspace,
+        addAlert,
+        removeAlert,
+      })
+    )
+      return;
+
     setListWorkspace(workspace)
       // eslint-disable-next-line no-console
       .then(() => console.log('alert edit success'))
@@ -54,21 +66,15 @@ export const DialogActionsWorkspace = ({
   };
 
   const handleAddWorkspace = () => {
-    if (!workspace.name) {
-      const alert: IAlert = {
-        severity: 'error',
-        mess: 'Please enter a name workspace before submit',
-      };
-
-      addAlert(alert);
-
-      /** Remove alert after 3s */
-      setTimeout(() => {
-        removeAlert();
-      }, 30000);
-
+    if (
+      hasErrors({
+        schema: schemaFormActionWorkspace,
+        rawData: workspace,
+        addAlert,
+        removeAlert,
+      })
+    )
       return;
-    }
 
     setListWorkspace({
       ...workspace,
@@ -121,9 +127,7 @@ export const DialogActionsWorkspace = ({
 
   return (
     <Dialog fullWidth open={open} onClose={() => handleClose()}>
-      <DialogTitle id="alert-dialog-title">
-        {title ?? workspace.name}
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">{title ?? workspace.id}</DialogTitle>
       <DialogContent>
         <TextField
           required
