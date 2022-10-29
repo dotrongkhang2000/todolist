@@ -21,6 +21,9 @@ import {
 } from '@/renderer/components/utils/renderIcon';
 import { setTask as setTaskFB } from '@/renderer/firebase/services';
 import { useWorkspaceManagerStore } from '@/renderer/components/side-bar';
+import { hasErrors } from '@/renderer/components/utils/hasError';
+import { schemaFormTask } from '@/renderer/components/dialogs/schema';
+import { useAlearManagerStore } from '@/renderer/components/alert';
 
 interface IDialogCreateTask {
   open: boolean;
@@ -107,6 +110,9 @@ export const DialogCreateTask = ({
     })
   );
 
+  const addAlert = useAlearManagerStore((state) => state.addAlert);
+  const removeAlert = useAlearManagerStore((state) => state.removeAlert);
+
   const [task, setTask] = useState<ITask>({
     id: '',
     title: '',
@@ -129,6 +135,16 @@ export const DialogCreateTask = ({
   };
 
   const handleSubmit = () => {
+    if (
+      hasErrors({
+        schema: schemaFormTask,
+        rawData: task,
+        addAlert,
+        removeAlert,
+      })
+    )
+      return;
+
     const taskIndex = totalTask + 1;
 
     const taskId =

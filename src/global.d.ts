@@ -54,6 +54,8 @@ declare global {
     severity: AlertColor;
     mess: string;
   }
+
+  type Errors<T> = Partial<Record<keyof T, string>>;
 }
 
 export {};
