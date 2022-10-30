@@ -40,6 +40,13 @@ export const SortableWorkspace = ({
   const handleContextMenu = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
+    if (window.windowRemote.getFlatform() === 'darwin') {
+      window.menu.popup();
+      console.log(window.windowRemote.getFlatform());
+
+      return;
+    }
+
     setAnchorEL(event.currentTarget);
   };
 
