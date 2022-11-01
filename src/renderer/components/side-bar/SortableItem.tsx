@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -41,8 +42,7 @@ export const SortableWorkspace = ({
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (window.windowRemote.getFlatform() === 'darwin') {
-      window.menu.popup();
-      console.log(window.windowRemote.getFlatform());
+      window.service.menu.popup();
 
       return;
     }

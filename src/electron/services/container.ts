@@ -7,6 +7,9 @@ import { SERVICE_IDENTIFIERS } from '@/electron/services/service-identifiers';
 
 const container = new Container();
 
-container.bind<IMenuService>(SERVICE_IDENTIFIERS.Menu).to(MenuService);
+container
+  .bind<IMenuService>(SERVICE_IDENTIFIERS.Menu)
+  .to(MenuService)
+  .inSingletonScope();
 
 export { container };

@@ -41,6 +41,7 @@ const getElectronPreloadConfig = () => {
       path: path.join(projectPath, 'build'),
       filename: '[name].js',
     },
+    devtool: false,
   };
 
   return config;

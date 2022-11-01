@@ -2,8 +2,10 @@ import path from 'path';
 
 import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
+import { initializeServices } from '@/electron/services/initialize-services';
 
-function createWindow() {
+const createWindow = () => {
+  initializeServices();
   // Create the browser window.
   const win = new BrowserWindow({
     width: 1000,
@@ -21,7 +23,7 @@ function createWindow() {
     )
     // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
-}
+};
 
 app.on('ready', createWindow);
 
