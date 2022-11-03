@@ -28,10 +28,18 @@ const getElectronMainConfig = () => {
         },
       ],
     },
+    resolve: {
+      alias: {
+        '@': path.join(projectPath, 'src'),
+      },
+      extensions: ['.tsx', '.ts', '.js'],
+    },
     output: {
       path: path.join(projectPath, 'build'),
       filename: '[name].js',
     },
+    devtool:
+      process.env.NODE_ENV === 'development' ? 'eval-source-map' : 'source-map',
     plugins,
   };
 

@@ -31,10 +31,17 @@ const getElectronPreloadConfig = () => {
         },
       ],
     },
+    resolve: {
+      alias: {
+        '@': path.join(projectPath, 'src'),
+      },
+      extensions: ['.tsx', '.ts', '.js'],
+    },
     output: {
       path: path.join(projectPath, 'build'),
       filename: '[name].js',
     },
+    devtool: false,
   };
 
   return config;
